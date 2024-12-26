@@ -10,7 +10,12 @@ struct ContentView: View {
             List {
                 ForEach(items) { item in
                     NavigationLink {
+                        #if false
                         Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        #else
+                        WebView(htmlFileName: "app")
+                            .navigationTitle("HyperApp")
+                        #endif
                     } label: {
                         Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
                     }
