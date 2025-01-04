@@ -1,20 +1,3 @@
-<html>
-  <head><title>App</title></head>
-  <body><main id=app></main></body>
-<style>
-<!-- @import "https://unpkg.com/water.css@2/out/water.min.css"; -->
-
-body {
-  font-size: 1.5em;
-}
-
-section {
-  display: flex;
-}
-</style>
-
-<script type="module">
-
 // begin of https://github.com/jorgebucaran/hyperapp/blob/main/index.js
 
 var SSR_NODE = 1
@@ -433,33 +416,3 @@ export var app = ({
 }
 
 // end of https://github.com/jorgebucaran/hyperapp/blob/main/index.js
-
-const AddTodo = (state) => ({
-  ...state,
-  value: "",
-  todos: state.todos.concat(state.value)
-})
-
-const NewValue = (state, event) => ({
-  ...state,
-  value: event.target.value,
-})
-
-app({
-  init: { todos: ["Learn Hyperapp"], value: "" },
-  view: ({ todos, value }) =>
-    h("main", {}, [
-      h("h1", {}, text("To-do list ✏️")),
-      h("ul", {},
-        todos.map((todo) => h("li", {}, text(todo)))
-      ),
-      h("section", {}, [
-        h("input", { type: "text", oninput: NewValue, value }),
-        h("button", { onclick: AddTodo }, text("Add new")),        
-      ])
-    ]),
-  node: document.getElementById("app"),
-})
-
-</script>
-</html>
