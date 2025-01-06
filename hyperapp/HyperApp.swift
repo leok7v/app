@@ -6,14 +6,13 @@ import Combine // Import Combine
 @main
 struct HyperApp: App {
 
+    #if startWebServer
     @State private var cancellables: Set<AnyCancellable> = []
-
+    #endif
+    
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
+        let schema = Schema([])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-        
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
@@ -25,6 +24,7 @@ struct HyperApp: App {
         WindowGroup {
             ContentView()
             .onAppear {
+                #if startWebServer
                 let future = Future<Bool, Error> { promise in
                     do {
                         let webServer = try WebServer(port: NWEndpoint.Port(rawValue: 8080)!)
@@ -49,8 +49,8 @@ struct HyperApp: App {
                         }
                     }
                     .store(in: &cancellables)
+                #endif
                 }
-
         }
         .modelContainer(sharedModelContainer)
     }
