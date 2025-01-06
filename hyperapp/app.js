@@ -11,16 +11,23 @@ const NewValue = (state, event) => ({
   value: event.target.value,
 })
 
+const RenderMultilineText = (textContent) =>
+  textContent.split("\n").map((line) => h("div", {}, text(line)));
+
 app({
-  init: { todos: ["Learn Hyperapp"], value: "" },
+  init: { todos: ["Hyperapp Chat"], value: "" },
   view: ({ todos, value }) =>
     h("main", {}, [
-      h("h1", {}, text("To-do list ✏️")),
+      h("h1", {}, text("Chat 💬")),
       h("ul", {},
-        todos.map((todo) => h("li", {}, text(todo)))
+        todos.map((todo) => h("li", {}, RenderMultilineText(todo)))
       ),
       h("section", {}, [
-        h("input", { type: "text", oninput: NewValue, value }),
+        h("textarea", {
+          oninput: NewValue,
+          value,
+          placeholder: "Enter your task...",
+        }),
         h("button", { onclick: AddTodo }, text("Add new")),
       ])
     ]),

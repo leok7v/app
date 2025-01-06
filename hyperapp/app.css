@@ -1,0 +1,28 @@
+@import "hyperapp://./water.min.css";
+
+body {
+    font-size: 1.5em;
+    max-width: none;
+}
+
+/* Ensure section div has responsive width */
+section div {
+    width: 100%;
+}
+
+/* Style the textarea */
+section div textarea {
+    width: 100%; /* Make the textarea take up the full width of its container */
+    resize: none; /* Prevent manual resizing if not needed */
+    min-height: 6em; /* Optional: Set a minimum height */
+    font-size: 1em;
+    padding: 0.5em;
+    box-sizing: border-box; /* Include padding and borders in width calculation */
+}
+
+/* Style the button */
+section div button {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 0.5em;
+}
