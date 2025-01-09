@@ -5,24 +5,50 @@ body {
     max-width: none;
 }
 
-/* Ensure section div has responsive width */
-section div {
-    width: 100%;
-}
+li div { width: 100%; }
 
-/* Style the textarea */
-section div textarea {
-    width: 100%; /* Make the textarea take up the full width of its container */
-    resize: none; /* Prevent manual resizing if not needed */
-    min-height: 6em; /* Optional: Set a minimum height */
-    font-size: 1em;
-    padding: 0.5em;
-    box-sizing: border-box; /* Include padding and borders in width calculation */
-}
-
-/* Style the button */
-section div button {
+div button {
     display: flex;
-    justify-content: flex-end;
-    padding-top: 0.5em;
+    justify: flex-end;
+    font-size: 150%;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+div.editable {
+    border: none;
+    padding: 0;
+    outline: none;
+}
+
+div.editor {
+    border: 1px solid #ccc;
+    padding: 0.5em;
+    outline: none;
+    border-radius: 8px !important;
+    box-sizing: border-box;
+}
+
+div.editor_tools {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.editable:empty:before {
+    content: attr(placeholder); /* Use the placeholder text */
+    color: #aaa; /* Placeholder text color */
+    pointer-events: none; /* Make placeholder text unselectable */
+    display: block;
+}
+
+body {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, macOS */
 }
