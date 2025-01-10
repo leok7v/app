@@ -1,7 +1,9 @@
 import SwiftUI
 import SwiftData
 import Network
-import Combine // Import Combine
+import Combine
+
+// see: https://medium.com/hyperapp/a-walk-through-hyperapp-2-b1f642fca172
 
 @main
 struct HyperApp: App {
@@ -22,7 +24,7 @@ struct HyperApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().frame(minWidth: 240, minHeight: 320)
             .onAppear {
                 #if startWebServer
                 let future = Future<Bool, Error> { promise in
@@ -54,5 +56,5 @@ struct HyperApp: App {
         }
         .modelContainer(sharedModelContainer)
     }
-    
+
 }

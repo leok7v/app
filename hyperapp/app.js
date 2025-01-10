@@ -1,27 +1,19 @@
-import { h, text, app } from "hyperapp://./hyperapp.js"
+import { app }               from "hyperapp://./hyperapp.js"
+import { focus, blur }       from "hyperapp://./hyperapp.dom.js"
+import { every, delay, now } from "hyperapp://./hyperapp.time.js"
+import { onMouseMove }       from "hyperapp://./hyperapp.events.js"
+import { ellipse }           from "hyperapp://./hyperapp.svg.js"
 
-let initial = "Questions and Answers will appear here"
-
-const response = (value) => {
-    return "What? I don't understand. Where's the tea?";
-};
-
-const add = (state) => {
-    const r = response(state.value);
-    const v = `${state.value}\n${r}`; // Concatenate value and response
-    return {
-        ...state,
-        list: state.list.length === 1 && state.list[0] === initial
-        ? [v]
-        : state.list.concat(v),
-        value: ""
-    }
-}
-
-// Yes, an electronic brain a simple one would suffice.
-// You'd just have  to program  it  to  say...
-
-// "What?" "I don't understand" "Where's the tea?"
+import {
+    main,
+    section,
+    div,
+    h1,
+    button,
+    ul,
+    li,
+    text,
+} from "hyperapp://./hyperapp.html.js"
 
 const lucky = (state) => {
     const value =
@@ -34,56 +26,80 @@ const lucky = (state) => {
 }
 
 const input = (state, event) => ({
-  ...state,
-  value: event.target.innerText,
+    ...state,
+    value: event.target.innerText,
 })
 
-const update = (element) => {
-  if (element.innerText !== value) { element.innerText = value }
+const multiline = (txt) =>
+    txt.split("\n").map((line) => div(text(line)))
+
+const update = (dispatch, { value }) => {
+    // Sync contenteditable div with state
+    const editable = document.querySelector(".editable")
+    if (editable && editable.innerText !== value) {
+        editable.innerText = value
+    }
+    return () => {}
 }
 
-const multiline = (textContent) =>
-  textContent.split("\n").map((line) => h("div", {}, text(line)))
+const answer = (value) => {
+    return "What?\nI don't understand.\nWhere's the tea?";
+};
 
-const updateEditable = (dispatch, { value }) => {
-  const editable = document.querySelector(".editable")
-  if (editable && editable.innerText !== value) {
-    editable.innerText = value
-  }
-  return () => {}
+const add = (state) => {
+    const a = answer(state.value)
+    const q = state.value
+    const e = [
+        { type: "question", text: q },
+        { type: "answer", text: a }
+    ]
+    requestAnimationFrame(() => {
+        const answers = document.querySelectorAll("li.answer")
+        if (answers.length > 0) {
+            answers[answers.length - 1].scrollIntoView(
+                { block: "end", behavior: "smooth" }
+            )
+        }
+    })
+    return {
+        ...state,
+        list: state.list.concat(e),
+        value: ""
+    }
 }
 
 app({
-  init: { list: [initial], value: "" },
-  subscriptions: (state) => [
-    [updateEditable, { value: state.value }], // Sync contenteditable div with state
-  ],
-  view: ({ list, value }) =>
-    h("main", {}, [
-      h("h1", {}, text("Chat 💬")),
-      h("ul", {},
-        list.map((todo) => h("li", {}, multiline(todo)))
-      ),
-      h("section", {}, [
-          h("div", { class: "editor" }, [
-            h("div", {
-              class: "editable",
-                contenteditable: "true",
-                placeholder: "Enter your question here...",
-                oninput: input,
-            }),
-            h("div", { class: "editor_tools" }, [
-                h("button", {
-                    disabled: value.trim() !== "",
-                    onclick:  lucky
-                }, text("😊")),
-                h("button", {
-                    disabled: value.trim() === "",
-                    onclick: add
-                }, text("⬆️")),
-            ])
-        ]),
-      ])
+    init: { list: [], value: "" },
+    subscriptions: (state) => [
+        [update, { value: state.value }],
+    ],
+    view: ({ list, value }) =>
+        main([
+            h1({ class: "header" }, text("Chat 💬")),
+            ul(
+              list.map((e) => li({ class: e.type }, multiline(e.text)))
+            ),
+        section( {}, [
+            div( { class: "editor" }, [
+                div({
+                    class: "editable",
+                    contenteditable: "true",
+                    placeholder: "Enter your question here...",
+                    oninput: input,
+                }),
+                div({ class: "editor_tools" }, [
+                    button( {
+                        disabled: value.trim() !== "",
+                        onclick:  lucky
+                    }, text("😊")), // ⚪
+                    button( {
+                        class: "up-arrow-icon",
+                        disabled: value.trim() === "",
+                        onclick: add
+                    }, text("")), // ⬆️
+                ])
+            ]),
+        ])
     ]),
     node: document.getElementById("app"),
 })
