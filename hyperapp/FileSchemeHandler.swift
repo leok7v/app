@@ -4,32 +4,59 @@ import WebKit
 class FileSchemeHandler: NSObject, WKURLSchemeHandler {
 
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
+        let allowedOrigin = "hyperapp://."
         guard let url = urlSchemeTask.request.url,
               let path = url.path.removingPercentEncoding else {
             urlSchemeTask.didFailWithError(NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL, userInfo: nil))
             return
         }
         let resourcePath = path.hasPrefix("/") ? String(path.dropFirst()) : path
-        if let fileURL = Bundle.main.url(forResource: resourcePath, withExtension: nil),
+        print(resourcePath)
+        if (resourcePath == "answer") {
+            let body = urlSchemeTask.request.httpBody
+            var bodyString: String? = nil
+            if let body = body {
+                bodyString = String(data: body, encoding: .utf8)
+                print(">urlSchemeTask.request.httpBody")
+                if let bodyString = bodyString {
+                    print(bodyString)
+                } else {
+                    print("Failed to decode body as UTF-8 string.")
+                }
+                print("<urlSchemeTask.request.httpBody")
+            }
+            if let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: ["Access-Control-Allow-Origin": allowedOrigin,
+                               "charset": "utf-8",
+                               "Content-Type": "text/plain"]) {
+                urlSchemeTask.didReceive(response)
+                // Placeholder:
+                let text = "🤔 What?\r\n" +
+                           "😕 I don't understand.\r\n" +
+                            "🫖 Where's the tea? ☕\r\n"
+                if let data = text.data(using: .utf8) {
+                    urlSchemeTask.didReceive(data)
+                    urlSchemeTask.didFinish()
+//                  print(String(data: data, encoding: .utf8))
+                    return;
+                } else {
+                    print("Failed to encode response body as UTF-8.")
+                }
+            }
+        } else if let fileURL = Bundle.main.url(forResource: resourcePath, withExtension: nil),
             let fileContent = try? String(contentsOf: fileURL, encoding: .utf8),
             let data = fileContent.data(using: .utf8) {
  //         print("fileContent:\n");
  //         print(fileContent)
  //         print("data:\n");
  //         print(data)
-            if let mainFrameURL = urlSchemeTask.request.url {
-                let mainFrameOrigin = mainFrameURL.absoluteString.split(separator: "/").prefix(3).joined(separator: "/")
-                var allowedOrigin = mainFrameOrigin
-                allowedOrigin = "hyperapp://."
-                let mt = mimeType(for: path);
-                if let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: ["Access-Control-Allow-Origin": allowedOrigin,
-                                   "charset": "utf-8",
-                                   "Content-Type": mt]) {
-                    urlSchemeTask.didReceive(response)
-                    urlSchemeTask.didReceive(data)
-                    urlSchemeTask.didFinish()
-                    return;
-                }
+            let mt = mimeType(for: path);
+            if let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: ["Access-Control-Allow-Origin": allowedOrigin,
+                               "charset": "utf-8",
+                               "Content-Type": mt]) {
+                urlSchemeTask.didReceive(response)
+                urlSchemeTask.didReceive(data)
+                urlSchemeTask.didFinish()
+                return;
             }
         }
         urlSchemeTask.didFailWithError(NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable, userInfo: nil))
