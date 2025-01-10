@@ -1,4 +1,4 @@
-@import "hyperapp://./pure.min.css";
+@import "hyperapp://./pure-min.css";
 
 :root {
     --background-light:  #ffffff !important; /* Base background for light mode */
@@ -39,8 +39,10 @@ body {
     color: black;
 }
 
-
 main {
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    justify-content: space-between; /* Push elements apart, placing section at the bottom */
     height: 100vh;
     max-height: 100vh;
     overflow-y: hidden;
@@ -60,17 +62,64 @@ ul {
     padding: 1em 0;
     list-style-type: none;
     background-color: var(--background);
-    height: calc(100vh - 10em);
-    max-height: calc(100vh - 10em);
 }
 
 li div { width: 100%; }
+
+li.initial {
+    color: gray;
+    font-style: italic;
+}
+
+li.question {
+    background-color: var(--question-bg);
+    border-radius: 8px;
+    padding: 0.5em;
+    margin-left: 2em;
+    margin-right: 0.5em;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+}
+
+li.answer {
+    font-style: normal;
+    padding: 0.5em;
+}
 
 section {
     flex-shrink: 0;
     padding: 0.5em;
     background-color: var(--background);
-    max-height: calc(100vh - 10em);
+}
+
+div.editor {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 0.5em;
+    outline: none;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: var(--question-bg);
+    max-height: 25vh;
+    display: flex;
+    flex-direction: column;
+}
+
+div.editable {
+    flex: 1;
+    max-height: 100%;
+    overflow-y: auto;
+    border: none;
+    padding: 0;
+    outline: none;
+}
+
+div.editor_tools {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 div button {
@@ -83,58 +132,11 @@ div button {
     margin: 0;
 }
 
-div.editor {
-    bottom: 0;
-    left: 0;
-    width: 100%;
-
-    border: 1px solid #ccc;
-    padding: 0.5em;
-    outline: none;
-
-    border-radius: 8px;
-    box-sizing: border-box;
-    background-color: var(--question-bg);
-    z-index: 1000; /* Ensure it's above the <ul> */
-}
-
-div.editable {
-    border: none;
-    padding: 0;
-    outline: none;
-}
-
-div.editor_tools {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .editable:empty:before {
     content: attr(placeholder);
     color: #aaa;
     pointer-events: none;
     display: block;
-}
-
-li.initial {
-    color: gray;
-    font-style: italic;
-}
-
-li.question {
-    background-color: var(--question-bg);
-    border-radius: 8px;
-    padding: 0.5em;
-    margin-left: 15%;
-    margin-right: 1em;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-}
-
-li.answer {
-    font-style: normal;
-    padding: 0.5em;
 }
 
 main, ul {
