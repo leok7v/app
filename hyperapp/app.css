@@ -1,17 +1,20 @@
 @import "hyperapp://./pure-min.css";
 
 :root {
-    --background-light:  #ffffff !important; /* Base background for light mode */
-    --background-dark:   #202020 !important; /* Base background for dark mode */
-    --question-bg-light: #d3d3d3 !important; /* Derived darker background for light mode */
-    --question-bg-dark:  #3a3a3a !important; /* Derived darker background for dark mode */
-    --font-color-light:  #101010 !important;
-    --font-color-dark:   #FEFEFE !important;
+    --background-light:   #f0f0f0 !important; /* Base background for light mode */
+    --background-lighter: #f5f5f4 !important;
+    --background-darker:  #1D1D1C !important; /* Base background for dark mode */
+    --background-dark:    #202020 !important; 
+    --question-bg-light:  #d3d3d3 !important; /* Derived darker background for light mode */
+    --question-bg-dark:   #3a3a3a !important; /* Derived darker background for dark mode */
+    --font-color-light:   #101010 !important;
+    --font-color-dark:    #FEFEFE !important;
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
         --background: var(--background-dark);
+        --background-dim: var(--background-darker);
         --question-bg: var(--question-bg-dark);
         --font-color: var(--font-color-dark);
     }
@@ -19,9 +22,10 @@
 
 @media (prefers-color-scheme: light) {
     :root {
-        --background: var(--background-light);
-        --question-bg: var(--question-bg-light);
-        --font-color: var(--font-color-light);
+        --background:     var(--background-light);
+        --background-dim: var(--background-lighter);
+        --question-bg:    var(--question-bg-light);
+        --font-color:     var(--font-color-light);
     }
 }
 
@@ -48,11 +52,15 @@ main {
     overflow-y: hidden;
 }
 
-h1.header {
+div.header {
     flex-shrink: 0;
     margin: 0;
-    padding: 0;
+    padding: 0.25em;
     text-align: left;
+    background-color: var(--background-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 ul {
@@ -122,6 +130,7 @@ div.editor_tools {
     align-items: center;
 }
 
+
 div button {
     display: flex;
     justify: flex-end;
@@ -130,6 +139,10 @@ div button {
     border: none;
     padding: 0;
     margin: 0;
+}
+
+button.lucky {
+    font-size: 100%;
 }
 
 .editable:empty:before {

@@ -45,6 +45,9 @@ const scroll = (state) => {
     return state
 }
 
+const settings = (state) => { return state }
+const login    = (state) => { return state }
+
 const add = (state) => {
     const a = answer(state.value)
     const q = state.value
@@ -66,7 +69,16 @@ app({
     ],
     view: ({ list, value }) =>
         main([
-            h1({ class: "header" }, text("MyGPT 💬")),
+            div({ class: "header" }, [
+                button({
+                    class: "settings",
+                    onclick: settings
+                }, text("⚙️")),
+                button({
+                    class: "login",
+                    onclick: login
+                }, text("🔑")),
+            ]),
             ul(list.map(e => li({class: e.type}, multiline(e.text)))),
             section( {}, [
                 div( { class: "editor" }, [
@@ -77,11 +89,12 @@ app({
                         oninput: input,
                     }),
                     div({ class: "editor_tools" }, [
-                        button( {
+                        button({
+                            class: "lucky",
                             disabled: value.trim() !== "",
-                            onclick:  lucky
-                        }, text("😊")), // ⚪
-                        button( {
+                            onclick: lucky
+                        }, text("💬")),
+                        button({
                             class: "up-arrow-icon",
                             disabled: value.trim() === "",
                             onclick: add
