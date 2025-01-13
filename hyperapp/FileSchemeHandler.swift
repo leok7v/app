@@ -11,17 +11,18 @@ class FileSchemeHandler: NSObject, WKURLSchemeHandler {
             return
         }
         let resourcePath = path.hasPrefix("/") ? String(path.dropFirst()) : path
-        print(resourcePath)
+//      print(resourcePath)
         if (resourcePath == "answer") {
             let body = urlSchemeTask.request.httpBody
             var bodyString: String? = nil
             if let body = body {
                 bodyString = String(data: body, encoding: .utf8)
-                print(">urlSchemeTask.request.httpBody")
+//              print(">urlSchemeTask.request.httpBody")
                 if let bodyString = bodyString {
                     print(bodyString)
                 } else {
                     print("Failed to decode body as UTF-8 string.")
+                    return
                 }
                 print("<urlSchemeTask.request.httpBody")
             }

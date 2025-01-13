@@ -1,12 +1,15 @@
 @import "hyperapp://./pure-min.css";
 
 :root {
-    --background-light:   #f0f0f0 !important; /* Base background for light mode */
+    --font-size-default: 1.25rem;
+    --font-size-large: 1.5rem;
+    --font-size-small: 0.875rem;
+    --background-light:   #f0f0f0 !important;
     --background-lighter: #f5f5f4 !important;
-    --background-darker:  #1D1D1C !important; /* Base background for dark mode */
+    --background-darker:  #1D1D1C !important;
     --background-dark:    #202020 !important; 
-    --question-bg-light:  #d3d3d3 !important; /* Derived darker background for light mode */
-    --question-bg-dark:   #3a3a3a !important; /* Derived darker background for dark mode */
+    --question-bg-light:  #d3d3d3 !important;
+    --question-bg-dark:   #3a3a3a !important;
     --font-color-light:   #101010 !important;
     --font-color-dark:    #FEFEFE !important;
 }
@@ -31,7 +34,8 @@
 
 body {
     background-color: var(--background);
-    font-size: 1.0em;
+    font-size: var(--font-size-default);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     height: 100vh;
     max-height: 100vh;
     margin: 0;
@@ -39,14 +43,12 @@ body {
     color: var(--font-color, #000);
 }
 
-@media (prefers-color-scheme: dark) {
-    color: black;
-}
+@media (prefers-color-scheme: dark) { var(--font-color, #000); }
 
 main {
     display: flex;
-    flex-direction: column; /* Stack children vertically */
-    justify-content: space-between; /* Push elements apart, placing section at the bottom */
+    flex-direction: column;
+    justify-content: space-between;
     height: 100vh;
     max-height: 100vh;
     overflow-y: hidden;
@@ -72,27 +74,18 @@ ul {
     background-color: var(--background);
 }
 
-li div { width: 100%; }
-
-li.initial {
-    color: gray;
-    font-style: italic;
-}
+li { overflow: hidden; box-sizing: border-box; user-select: text; padding: 0.5em; }
 
 li.question {
     background-color: var(--question-bg);
     border-radius: 8px;
-    padding: 0.5em;
     margin-left: 2em;
     margin-right: 0.5em;
-    box-sizing: border-box;
     border: 1px solid #ccc;
+    font-style: italic;
 }
 
-li.answer {
-    font-style: normal;
-    padding: 0.5em;
-}
+li div { width: 100%; }
 
 section {
     flex-shrink: 0;
@@ -176,9 +169,8 @@ main::-webkit-scrollbar, ul::-webkit-scrollbar {
   }
 }
 
-.up-arrow-icon-disabled {
-  width: 1em;
-  height: 1em;
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="gray" d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM151.2 217.4c-4.6 4.2-7.2 10.1-7.2 16.4c0 12.3 10 22.3 22.3 22.3l41.7 0 0 96c0 17.7 14.3 32 32 32l32 0c17.7 0 32-14.3 32-32l0-96 41.7 0c12.3 0 22.3-10 22.3-22.3c0-6.2-2.6-12.1-7.2-16.4l-91-84c-3.8-3.5-8.7-5.4-13.9-5.4s-10.1 1.9-13.9 5.4l-91 84z"/></svg>') no-repeat center;
-  background-size: contain;
-}
+.lucky:disabled,
+.up-arrow-icon:disabled { opacity: 0.5; pointer-events: none; }
+
+.lucky:enabled, .up-arrow-icon:enabled { opacity: 1; cursor: pointer; }
+
