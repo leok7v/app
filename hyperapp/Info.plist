@@ -2,22 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleExecutable</key>
-	<string></string>
-	<key>CFBundleIdentifier</key>
-	<string></string>
-	<key>LSApplicationCategoryType</key>
-	<string>public.app-category.productivity</string>
+	<key>CFBundleIconFile</key>
+	<string>AppIcon.icns</string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>AppIcon.icns</string>
+	</array>
+	<key>CFBundleIconName</key>
+	<string>AppIcon</string>
 	<key>CFBundleIcons</key>
 	<dict>
 		<key>CFBundlePrimaryIcon</key>
 		<dict>
-			<key>CFBundleIconName</key>
-			<string>AppIcon</string>
 			<key>CFBundleIconFiles</key>
 			<array>
 				<string>AppIcon</string>
 			</array>
+			<key>CFBundleIconName</key>
+			<string>AppIcon</string>
 			<key>UIPrerenderedIcon</key>
 			<true/>
 		</dict>
@@ -27,28 +29,23 @@
 			<array>
 				<string>AppIcon</string>
 			</array>
-			<key>UINewsstandBindingType</key>
-			<string>UINewsstandBindingTypeMagazine</string>
 			<key>UINewsstandBindingEdge</key>
 			<string>UINewsstandBindingEdgeLeft</string>
+			<key>UINewsstandBindingType</key>
+			<string>UINewsstandBindingTypeMagazine</string>
 		</dict>
 	</dict>
-	<key>CFBundleIconName</key>
-	<string>AppIcon</string>
-	<key>CFBundleIconFiles</key>
-	<array>
-		<string>AppIcon.icns</string>
-	</array>
-	<key>UIPrerenderedIcon</key>
-	<true/>
-	<key>CFBundleIconFile</key>
-	<string>AppIcon.icns</string>
 	<key>ProductPageIconFile</key>
 	<string>AppIcon.icns</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
 		<string>processing</string>
+		<string>push-to-talk</string>
+		<string>fetch</string>
+		<string>audio</string>
 	</array>
+	<key>UIPrerenderedIcon</key>
+	<true/>
 </dict>
 </plist>

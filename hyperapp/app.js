@@ -91,8 +91,39 @@ const add = (state) => [
     delay(33, scroll)
 ];
 
+const voice = (state) => {
+    console.log(`Is secure context: ${window.isSecureContext}`);
+    const editableDiv = document.querySelector('.editable')
+    const micButton = document.querySelector('.mic-button')
+    micButton.disabled = true
+    state.recognition.start()
+    state.recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        editableDiv.innerText += transcript + ' ';
+    }
+    state.recognition.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+    }
+    state.recognition.onend = () => {
+        micButton.disabled = false;
+    }
+}
+
+const speech = () => {
+    console.log(`Is secure context: ${window.isSecureContext}`);
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+    console.log(`SpeechRecognition: ${SpeechRecognition}`);
+    let recognition = new SpeechRecognition()
+    console.log(`recognition: ${recognition}`);
+    return recognition
+}
+
 app({
-    init: { list: [], value: "" },
+    init: {
+        list: [],
+        value: "",
+        recognition: speech()
+    },
     subscriptions: (state) => [
         [update, { value: state.value }],
     ],
@@ -123,6 +154,13 @@ app({
                             disabled: value.trim() !== "",
                             onclick: lucky
                         }, text("💬")),
+/* TODO: does not work
+                        button({
+                            class: "mic-button",
+                            disabled: value.trim() !== "",
+                            onclick: voice
+                        }, text("🎤")),
+*/
                         button({
                             class: "up-arrow-icon",
                             disabled: value.trim() === "",

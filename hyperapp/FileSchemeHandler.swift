@@ -26,9 +26,14 @@ class FileSchemeHandler: NSObject, WKURLSchemeHandler {
                 }
                 print("<urlSchemeTask.request.httpBody")
             }
-            if let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: ["Access-Control-Allow-Origin": allowedOrigin,
-                               "charset": "utf-8",
-                               "Content-Type": "text/plain"]) {
+            if let response = HTTPURLResponse(
+                url: url,
+                statusCode: 200,
+                httpVersion: "HTTP/1.1",
+                headerFields:
+                    ["Access-Control-Allow-Origin": allowedOrigin,
+                     "charset": "utf-8",
+                     "Content-Type": "text/plain"]) {
                 urlSchemeTask.didReceive(response)
                 // Placeholder:
                 let text = "🤔 What?\r\n" +
@@ -50,10 +55,23 @@ class FileSchemeHandler: NSObject, WKURLSchemeHandler {
  //         print(fileContent)
  //         print("data:\n");
  //         print(data)
+// Content-Security-Policy: default-src 'self' hyperapp://; script-src 'self' hyperapp://; img-src 'self' data: hyperapp://;
+
             let mt = mimeType(for: path);
-            if let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: ["Access-Control-Allow-Origin": allowedOrigin,
-                               "charset": "utf-8",
-                               "Content-Type": mt]) {
+            if let response = HTTPURLResponse(
+                url: url,
+                statusCode: 200,
+                httpVersion: "HTTP/1.1",
+                headerFields:
+                    ["Access-Control-Allow-Origin": allowedOrigin,
+                     "Content-Type": mt,
+                     "charset": "utf-8",
+                     "Permissions-Policy": "microphone=(self)",
+                     "Content-Security-Policy":
+                     "default-src 'self' hyperapp://.;" +
+                     "img-src 'self' hyperapp://. data:; " +
+                     "style-src 'self' hyperapp://. 'unsafe-inline'; " +
+                     "script-src 'self' hyperapp://. 'unsafe-inline';"]) {
                 urlSchemeTask.didReceive(response)
                 urlSchemeTask.didReceive(data)
                 urlSchemeTask.didFinish()
