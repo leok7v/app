@@ -1,11 +1,11 @@
 import { app }               from "hyperapp://./hyperapp.js"
-import { focus, blur }       from "hyperapp://./hyperapp.dom.js"
 import { every, delay, now } from "hyperapp://./hyperapp.time.js"
-import { onMouseMove }       from "hyperapp://./hyperapp.events.js"
-import { ellipse }           from "hyperapp://./hyperapp.svg.js"
+// import { focus, blur }       from "hyperapp://./hyperapp.dom.js"
+// import { onMouseMove }       from "hyperapp://./hyperapp.events.js"
+// import { ellipse }           from "hyperapp://./hyperapp.svg.js"
 
 import {
-    main, h1, ul, li, section, div, button, text,
+    main, h1, ul, li, section, div, button, text, input
 } from "hyperapp://./hyperapp.html.js"
 
 const lucky = (state) => {
@@ -18,7 +18,7 @@ const lucky = (state) => {
     }
 }
 
-const input = (state, event) => ({
+const changed = (state, event) => ({
     ...state,
     value: event.target.innerText,
 })
@@ -41,8 +41,8 @@ const scroll = (state) => {
     return state
 }
 
-const settings = (state) => { return state }
-const login    = (state) => { return state }
+const search  = (state) => { return state }
+const restart = (state) => { return state }
 
 const answer = async (value) => {
     console.log("answer(value:" + value + ")");
@@ -72,6 +72,7 @@ const refresh = (state, { question, answer }) => {
         { type: "question", text: question },
         { type: "answer", text: answer },
     ];
+    console.log("List length:", state.list.length);
     return {
         ...state,
         list: state.list.concat(e),
@@ -91,53 +92,23 @@ const add = (state) => [
     delay(33, scroll)
 ];
 
-const voice = (state) => {
-    console.log(`Is secure context: ${window.isSecureContext}`);
-    const editableDiv = document.querySelector('.editable')
-    const micButton = document.querySelector('.mic-button')
-    micButton.disabled = true
-    state.recognition.start()
-    state.recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        editableDiv.innerText += transcript + ' ';
-    }
-    state.recognition.onerror = (event) => {
-        console.error('Speech recognition error:', event.error);
-    }
-    state.recognition.onend = () => {
-        micButton.disabled = false;
-    }
-}
-
-const speech = () => {
-    console.log(`Is secure context: ${window.isSecureContext}`);
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-    console.log(`SpeechRecognition: ${SpeechRecognition}`);
-    let recognition = new SpeechRecognition()
-    console.log(`recognition: ${recognition}`);
-    return recognition
-}
-
 app({
     init: {
         list: [],
-        value: "",
-        recognition: speech()
+        value: ""
     },
     subscriptions: (state) => [
-        [update, { value: state.value }],
+        [update, { value: state.value }]
     ],
     view: ({ list, value }) =>
         main([
             div({ class: "header" }, [
-                button({
-                    class: "settings",
-                    onclick: settings
-                }, text("⚙️")),
-                button({
-                    class: "login",
-                    onclick: login
-                }, text("🔑")),
+                button({ class: "magnifying-glass-icon",
+                    disabled: list.length === 0,
+                    onclick: search }),
+                button({ class: "pen-to-square-icon",
+                    disabled: list.length === 0,
+                    onclick: restart }),
             ]),
             ul(list.map(e => li({class: e.type}, multiline(e.text)))),
             section( {}, [
@@ -146,7 +117,7 @@ app({
                         class: "editable",
                         contenteditable: "true",
                         placeholder: "Ask anything...",
-                        oninput: input,
+                        oninput: changed,
                     }),
                     div({ class: "editor_tools" }, [
                         button({
@@ -154,13 +125,6 @@ app({
                             disabled: value.trim() !== "",
                             onclick: lucky
                         }, text("💬")),
-/* TODO: does not work
-                        button({
-                            class: "mic-button",
-                            disabled: value.trim() !== "",
-                            onclick: voice
-                        }, text("🎤")),
-*/
                         button({
                             class: "up-arrow-icon",
                             disabled: value.trim() === "",

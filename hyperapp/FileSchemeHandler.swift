@@ -4,7 +4,7 @@ import WebKit
 class FileSchemeHandler: NSObject, WKURLSchemeHandler {
 
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
-        let allowedOrigin = "hyperapp://."
+        let allowedOrigin = "hyperapp://"
         guard let url = urlSchemeTask.request.url,
               let path = url.path.removingPercentEncoding else {
             urlSchemeTask.didFailWithError(NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL, userInfo: nil))
@@ -66,12 +66,12 @@ class FileSchemeHandler: NSObject, WKURLSchemeHandler {
                     ["Access-Control-Allow-Origin": allowedOrigin,
                      "Content-Type": mt,
                      "charset": "utf-8",
-                     "Permissions-Policy": "microphone=(self)",
+                     "Permissions-Policy": "microphone=(self 'hyperapp://');",
                      "Content-Security-Policy":
-                     "default-src 'self' hyperapp://.;" +
-                     "img-src 'self' hyperapp://. data:; " +
-                     "style-src 'self' hyperapp://. 'unsafe-inline'; " +
-                     "script-src 'self' hyperapp://. 'unsafe-inline';"]) {
+                     "default-src 'self' hyperapp://;" +
+                     "img-src 'self' hyperapp:// data:; " +
+                     "style-src 'self' hyperapp:// 'unsafe-inline'; " +
+                     "script-src 'self' hyperapp:// 'unsafe-inline';"]) {
                 urlSchemeTask.didReceive(response)
                 urlSchemeTask.didReceive(data)
                 urlSchemeTask.didFinish()
