@@ -1,8 +1,10 @@
 import { app }               from "hyperapp://./hyperapp.js"
 import { every, delay, now } from "hyperapp://./hyperapp.time.js"
-// import { focus, blur }       from "hyperapp://./hyperapp.dom.js"
-// import { onMouseMove }       from "hyperapp://./hyperapp.events.js"
-// import { ellipse }           from "hyperapp://./hyperapp.svg.js"
+/*
+import { focus, blur }       from "hyperapp://./hyperapp.dom.js"
+import { onMouseMove }       from "hyperapp://./hyperapp.events.js"
+import { ellipse }           from "hyperapp://./hyperapp.svg.js"
+*/
 
 import {
     main, h1, ul, li, section, div, button, text, input
@@ -27,7 +29,6 @@ const multiline = (txt) =>
     txt.split("\n").map((line) => div(text(line)))
 
 const update = (dispatch, { value }) => {
-    // Sync contenteditable div with state
     const editable = document.querySelector(".editable")
     if (editable && editable.innerText !== value) {
         editable.innerText = value
@@ -41,8 +42,14 @@ const scroll = (state) => {
     return state
 }
 
-const search  = (state) => { return state }
-const restart = (state) => { return state }
+const search  = (state) => {
+    return state
+}
+
+const restart = (state) => ({
+    ...state,
+    list: [],
+})
 
 const answer = async (value) => {
     console.log("answer(value:" + value + ")");
@@ -120,13 +127,11 @@ app({
                         oninput: changed,
                     }),
                     div({ class: "editor_tools" }, [
-                        button({
-                            class: "lucky",
+                        button({ class: "lucky",
                             disabled: value.trim() !== "",
                             onclick: lucky
                         }, text("💬")),
-                        button({
-                            class: "up-arrow-icon",
+                        button({ class: "up-arrow-icon",
                             disabled: value.trim() === "",
                             onclick: add
                         }),

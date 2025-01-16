@@ -3,92 +3,85 @@ import WebKit
 
 class FileSchemeHandler: NSObject, WKURLSchemeHandler {
 
-    func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
-        let allowedOrigin = "hyperapp://"
-        guard let url = urlSchemeTask.request.url,
-              let path = url.path.removingPercentEncoding else {
-            urlSchemeTask.didFailWithError(NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL, userInfo: nil))
-            return
+    func infer(_ request: String) -> String {
+        print(request)
+        return "🤔 What?\r\n" +
+               "😕 I don't understand.\r\n" +
+               "🫖 Where's the tea? ☕\r\n"
+    }
+        
+    func post(_ webView: WKWebView, urlSchemeTask: WKURLSchemeTask, url: URL) {
+        var text = "I don't know.\r\n"
+        if let body = urlSchemeTask.request.httpBody {
+            guard let request = String(data: body, encoding: .utf8) else {
+                print("Failed to decode body as UTF-8 string.")
+                return
+            }
+            text = infer(request)
         }
-        let resourcePath = path.hasPrefix("/") ? String(path.dropFirst()) : path
-//      print(resourcePath)
-        if (resourcePath == "answer") {
-            let body = urlSchemeTask.request.httpBody
-            var bodyString: String? = nil
-            if let body = body {
-                bodyString = String(data: body, encoding: .utf8)
-//              print(">urlSchemeTask.request.httpBody")
-                if let bodyString = bodyString {
-                    print(bodyString)
-                } else {
-                    print("Failed to decode body as UTF-8 string.")
-                    return
-                }
-                print("<urlSchemeTask.request.httpBody")
-            }
-            if let response = HTTPURLResponse(
-                url: url,
-                statusCode: 200,
-                httpVersion: "HTTP/1.1",
-                headerFields:
-                    ["Access-Control-Allow-Origin": allowedOrigin,
-                     "charset": "utf-8",
-                     "Content-Type": "text/plain"]) {
-                urlSchemeTask.didReceive(response)
-                // Placeholder:
-                let text = "🤔 What?\r\n" +
-                           "😕 I don't understand.\r\n" +
-                            "🫖 Where's the tea? ☕\r\n"
-                if let data = text.data(using: .utf8) {
-                    urlSchemeTask.didReceive(data)
-                    urlSchemeTask.didFinish()
-//                  print(String(data: data, encoding: .utf8))
-                    return;
-                } else {
-                    print("Failed to encode response body as UTF-8.")
-                }
-            }
-        } else if let fileURL = Bundle.main.url(forResource: resourcePath, withExtension: nil),
-            let fileContent = try? String(contentsOf: fileURL, encoding: .utf8),
-            let data = fileContent.data(using: .utf8) {
- //         print("fileContent:\n");
- //         print(fileContent)
- //         print("data:\n");
- //         print(data)
-// Content-Security-Policy: default-src 'self' hyperapp://; script-src 'self' hyperapp://; img-src 'self' data: hyperapp://;
-
-            let mt = mimeType(for: path);
-            if let response = HTTPURLResponse(
-                url: url,
-                statusCode: 200,
-                httpVersion: "HTTP/1.1",
-                headerFields:
-                    ["Access-Control-Allow-Origin": allowedOrigin,
-                     "Content-Type": mt,
-                     "charset": "utf-8",
-                     "Permissions-Policy": "microphone=(self 'hyperapp://');",
-                     "Content-Security-Policy":
-                     "default-src 'self' hyperapp://;" +
-                     "img-src 'self' hyperapp:// data:; " +
-                     "style-src 'self' hyperapp:// 'unsafe-inline'; " +
-                     "script-src 'self' hyperapp:// 'unsafe-inline';"]) {
-                urlSchemeTask.didReceive(response)
+        if let r = response(url, mt: "text/plain") {
+            urlSchemeTask.didReceive(r)
+            if let data = text.data(using: .utf8) {
                 urlSchemeTask.didReceive(data)
                 urlSchemeTask.didFinish()
                 return;
+            } else {
+                print("Failed to encode response body as UTF-8.")
             }
         }
-        urlSchemeTask.didFailWithError(NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable, userInfo: nil))
+    }
+    
+    func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
+
+        func failWithError() {
+            let error = NSError(domain: NSURLErrorDomain,
+                                code: NSURLErrorResourceUnavailable,
+                                userInfo: nil);
+            urlSchemeTask.didFailWithError(error);
+        }
+
+        guard
+            let u = urlSchemeTask.request.url,
+            let p = u.path.removingPercentEncoding else {
+                failWithError(); return
+            }
+        let resourcePath = p.hasPrefix("/") ? String(p.dropFirst()) : p
+        guard let r = response(u, mt: mimeType(for: p)) else {
+            failWithError(); return
+        }
+        if resourcePath == "answer" {
+            post(webView, urlSchemeTask: urlSchemeTask, url: u)
+            return
+        }
+        guard let f = Bundle.main.url(forResource: resourcePath,
+                                      withExtension: nil) else {
+            failWithError(); return
+        }
+        let ext = URL(fileURLWithPath: resourcePath).pathExtension.lowercased()
+        let binary = ["png", "jpg", "jpeg", "gif", "ico", "webp"].contains(ext)
+        urlSchemeTask.didReceive(r)
+        if binary {
+            guard let data = try? Data(contentsOf: f) else {
+                failWithError(); return
+            }
+            urlSchemeTask.didReceive(data)
+        } else {
+            guard
+                let fileContent = try? String(contentsOf: f, encoding: .utf8),
+                let data = fileContent.data(using: .utf8) else {
+                    failWithError(); return
+            }
+            urlSchemeTask.didReceive(data)
+        }
+        urlSchemeTask.didFinish()
     }
 
     func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
-        // Not needed for this example
     }
 
     // Helper function to determine the MIME type based on file extension
-    private func mimeType(for path: String) -> String {
-        let pathExtension = URL(fileURLWithPath: path).pathExtension.lowercased()
-        switch pathExtension {
+    private func mimeType(for p: String) -> String {
+        switch URL(fileURLWithPath: p).pathExtension.lowercased() {
             case "html", "htm": return "text/html"
             case "js": return "text/javascript"
             case "css": return "text/css"
@@ -97,4 +90,23 @@ class FileSchemeHandler: NSObject, WKURLSchemeHandler {
             default: return "application/octet-stream"
         }
     }
+    
+    let allowedOrigin = "hyperapp://"
+    
+    func response(_ u: URL, mt: String) -> HTTPURLResponse? {
+        let responseHeaders = [
+            "Access-Control-Allow-Origin": allowedOrigin,
+            "Content-Type": mt,
+            "Content-Security-Policy":
+                "default-src 'self' hyperapp://;" +
+                "img-src 'self' hyperapp:// data:;" +
+                "style-src 'self' hyperapp:// 'unsafe-inline';" +
+                "script-src 'self' hyperapp:// 'unsafe-inline';"
+        ]
+        return HTTPURLResponse(url: u,
+                               statusCode: 200,
+                               httpVersion: "HTTP/1.1",
+                               headerFields: responseHeaders)
+    }
+
 }
