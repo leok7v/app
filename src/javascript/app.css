@@ -1,0 +1,201 @@
+@import "gyptix://./pure-min.css";
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        background-color: #020202;
+        color: #fefefe;
+        --nav-color: #171717;
+        --button-highlight: #444;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        background-color: #f0f0f0;
+        color: #101010;
+        --nav-color: #d0d0d0;
+        --button-highlight: #ccc;
+    }
+}
+
+body {
+    font-size: 1.5em;
+    margin: 0;
+    height: 100vh;
+}
+
+.app-container {
+    position: relative;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.nav {
+    background-color: var(--nav-color);
+    padding: 0.25em;
+    box-sizing: border-box;
+    transition: width 0.3s, transform 0.3s;
+    position: relative;
+    border: 1pt solid #888;
+    border-radius: 0.25em;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.nav-content {
+    overflow-y: auto; /* Enable scrolling for content */
+    flex: 1; /* Allow content to take available space */
+    padding-top: 0.25em; /* Ensure spacing below header */
+}
+
+.nav.expanded {
+    width: 35%;
+}
+
+.nav.collapsed {
+    width: 0;
+    overflow-y: none;
+}
+
+.main-content {
+    flex: 1;
+    padding: 0.25em;
+    box-sizing: border-box;
+    position: relative;
+    border: 1pt solid #888;
+    border-radius: 0.25em;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.page {
+    font-size: 0.75em;
+    background: inherit;
+    padding: 1em;
+    box-sizing: border-box;
+    overflow-y: auto;
+    flex: 1;
+    max-height: calc(100vh - 3em); /* Adjust for header space */
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25em;
+    margin-bottom: 0.25em;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
+}
+
+@media (max-width: 320px) {
+    .container {
+        position: relative;
+    }
+    .nav.expanded {
+        --nav-overlap: true;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 25vw;
+        min-width: max-content;
+        height: 100%;
+        z-index: 2;
+    }
+    .main-content {
+        width: 100%;
+    }
+}
+
+.btn {
+    color: inherit;
+    font-size: 0.75em;
+    width: 1.25em;
+    height: 1.25em;
+    padding: 0;
+    border: 1px solid #888;
+    border-radius: 0.25em;
+    background: transparent;
+    cursor: pointer;
+    transition: transform 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.btn:focus {
+    outline: none;
+    background-color: #888;
+}
+
+.nav .header .btn.toggle {
+    transform: rotate(90deg);
+}
+
+.main-content .header .btn.toggle {
+    transform: rotate(270deg);
+}
+
+.in {
+    border: 1pt solid #888;
+    max-width: 10em;
+}
+
+.in:focus {
+    border-color: red;
+}
+
+.nav-page-btn {
+    font-size: 9pt;
+    color: inherit;
+    display: block;
+    width: calc(100% - 1em);
+    margin: 0.25em auto;
+    padding: 0.25em;
+    border: 1px solid #888;
+    border-radius: 0.25em;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.nav-page-btn:hover,
+.nav-page-btn:focus {
+    background-color: var(--button-highlight);
+}
+
+.page .close-btn {
+    position: top;
+    top: 0.25em;
+    right: 0.25em;
+    font-size: 1em;
+    background: transparent;
+    border: 1px solid #888;
+    border-radius: 0.25em;
+    padding: 0.25em;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.page .close-btn:hover,
+.page .close-btn:focus {
+    background-color: #888;
+}
+
+.markdown-content {
+    margin-top: 3em;
+}

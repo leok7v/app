@@ -1,13 +1,12 @@
-# hyperapp.mac
+# hyperapp
 
-### tools: 
+hyperapp.js playground
 
-* https://cloudconvert.com/png-to-icns
-  converts .png with transparency to icns for MacOS
+```
+git clone --recursive https://github.com/leok7v/hyperapp.mac
+```
 
-* https://fontawesome.com/
-  fontawesome-free-6.7.2-web.zip/svgs/regular
-  can be fed to ChatGPT to convert to inline SVG css
-  
-  
+UI has been implemented in javascript 
+using [hyperapp](https://github.com/jorgebucaran/hyperapp)
 
+See [a-walk-through-hyperapp](https://medium.com/hyperapp/a-walk-through-hyperapp-2-b1f642fca172)
