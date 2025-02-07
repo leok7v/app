@@ -1,4 +1,4 @@
-@import "gyptix://./pure-min.css";
+@import "app://./pure-min.css";
 
 @media (prefers-color-scheme: dark) {
     :root {

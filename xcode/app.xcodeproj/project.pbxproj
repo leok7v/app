@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		B30518582D1CE9470009362D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B30518572D1CE9470009362D /* WebKit.framework */; };
 		B33E9D022D4B21FA005FEE9B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B33E9D012D4B21FA005FEE9B /* PrivacyInfo.xcprivacy */; };
-		B3511D722D544A5600667676 /* hyperapp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B3511D712D544A5600667676 /* hyperapp.cpp */; };
+		B3511D722D544A5600667676 /* app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B3511D712D544A5600667676 /* app.cpp */; };
 		B36EBB452D275258005972FF /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B36EBB442D275258005972FF /* Network.framework */; };
 		B3756DE92D41D43100BCF111 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3756DE82D41D43100BCF111 /* Assets.xcassets */; };
 		B384C9012D53D7A200E0354C /* marked.js in Resources */ = {isa = PBXBuildFile; fileRef = B384C8FF2D53D7A200E0354C /* marked.js */; };
@@ -17,7 +17,7 @@
 		B3A482932D5035DC00FCE4A5 /* SingleWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A482912D5035DC00FCE4A5 /* SingleWindow.swift */; };
 		B3A482952D5035DC00FCE4A5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A4828D2D5035DC00FCE4A5 /* ContentView.swift */; };
 		B3A482962D5035DC00FCE4A5 /* FileSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A4828E2D5035DC00FCE4A5 /* FileSchemeHandler.swift */; };
-		B3A482972D5035DC00FCE4A5 /* hyperapp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A4828F2D5035DC00FCE4A5 /* hyperapp.swift */; };
+		B3A482972D5035DC00FCE4A5 /* app.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A4828F2D5035DC00FCE4A5 /* app.swift */; };
 		B3A482982D5035DC00FCE4A5 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A482922D5035DC00FCE4A5 /* WebView.swift */; };
 		B3A4829A2D50384100FCE4A5 /* WindowDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A482992D50384100FCE4A5 /* WindowDelegate.swift */; };
 		B3B3F4002D4AB3C300A2D406 /* hyperapp.js in Resources */ = {isa = PBXBuildFile; fileRef = B3B3F3ED2D4AB3C300A2D406 /* hyperapp.js */; };
@@ -35,20 +35,20 @@
 
 /* Begin PBXFileReference section */
 		B30518572D1CE9470009362D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.2.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
-		B323E3632D1CDAB2007BA38C /* hyperapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hyperapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B323E3632D1CDAB2007BA38C /* app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = app.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B33E9D012D4B21FA005FEE9B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = SOURCE_ROOT; };
-		B33E9D0E2D4B262E005FEE9B /* hyperapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = hyperapp.entitlements; sourceTree = "<group>"; };
-		B33E9D0F2D4B262E005FEE9B /* hyperappDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = hyperappDebug.entitlements; sourceTree = "<group>"; };
-		B3511D702D544A4C00667676 /* hyperapp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = hyperapp.h; path = ../src/hyperapp.h; sourceTree = SOURCE_ROOT; };
-		B3511D712D544A5600667676 /* hyperapp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = hyperapp.cpp; path = ../src/hyperapp.cpp; sourceTree = SOURCE_ROOT; };
-		B3511D732D544B0700667676 /* hyperapp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "hyperapp-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
+		B33E9D0E2D4B262E005FEE9B /* app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = app.entitlements; sourceTree = "<group>"; };
+		B33E9D0F2D4B262E005FEE9B /* appDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = appDebug.entitlements; sourceTree = "<group>"; };
+		B3511D702D544A4C00667676 /* app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = app.h; path = ../src/app.h; sourceTree = SOURCE_ROOT; };
+		B3511D712D544A5600667676 /* app.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = app.cpp; path = ../src/app.cpp; sourceTree = SOURCE_ROOT; };
+		B3511D732D544B0700667676 /* app-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "app-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		B36EBB442D275258005972FF /* Network.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Network.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.2.sdk/System/Library/Frameworks/Network.framework; sourceTree = DEVELOPER_DIR; };
 		B3756DE82D41D43100BCF111 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B384C8FF2D53D7A200E0354C /* marked.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = marked.js; sourceTree = "<group>"; };
 		B384C9052D53DC7800E0354C /* highlight.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = highlight.min.js; sourceTree = "<group>"; };
 		B3A4828D2D5035DC00FCE4A5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = ../src/swift/ContentView.swift; sourceTree = SOURCE_ROOT; };
 		B3A4828E2D5035DC00FCE4A5 /* FileSchemeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FileSchemeHandler.swift; path = ../src/swift/FileSchemeHandler.swift; sourceTree = SOURCE_ROOT; };
-		B3A4828F2D5035DC00FCE4A5 /* hyperapp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = hyperapp.swift; path = ../src/swift/hyperapp.swift; sourceTree = SOURCE_ROOT; };
+		B3A4828F2D5035DC00FCE4A5 /* app.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = app.swift; path = ../src/swift/app.swift; sourceTree = SOURCE_ROOT; };
 		B3A482912D5035DC00FCE4A5 /* SingleWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SingleWindow.swift; path = ../src/swift/SingleWindow.swift; sourceTree = SOURCE_ROOT; };
 		B3A482922D5035DC00FCE4A5 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WebView.swift; path = ../src/swift/WebView.swift; sourceTree = SOURCE_ROOT; };
 		B3A482992D50384100FCE4A5 /* WindowDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WindowDelegate.swift; path = ../src/swift/WindowDelegate.swift; sourceTree = SOURCE_ROOT; };
@@ -99,8 +99,8 @@
 				B3B3F3FE2D4AB3C300A2D406 /* javascript */,
 				B3756DF12D41D46B00BCF111 /* swift */,
 				B3511D742D544B1300667676 /* C */,
-				B33E9D0E2D4B262E005FEE9B /* hyperapp.entitlements */,
-				B33E9D0F2D4B262E005FEE9B /* hyperappDebug.entitlements */,
+				B33E9D0E2D4B262E005FEE9B /* app.entitlements */,
+				B33E9D0F2D4B262E005FEE9B /* appDebug.entitlements */,
 				B323E3642D1CDAB2007BA38C /* Products */,
 				B30518562D1CE9470009362D /* Frameworks */,
 			);
@@ -109,7 +109,7 @@
 		B323E3642D1CDAB2007BA38C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B323E3632D1CDAB2007BA38C /* hyperapp.app */,
+				B323E3632D1CDAB2007BA38C /* app.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -117,8 +117,8 @@
 		B3511D742D544B1300667676 /* C */ = {
 			isa = PBXGroup;
 			children = (
-				B3511D702D544A4C00667676 /* hyperapp.h */,
-				B3511D712D544A5600667676 /* hyperapp.cpp */,
+				B3511D702D544A4C00667676 /* app.h */,
+				B3511D712D544A5600667676 /* app.cpp */,
 			);
 			path = C;
 			sourceTree = "<group>";
@@ -128,11 +128,11 @@
 			children = (
 				B3A4828D2D5035DC00FCE4A5 /* ContentView.swift */,
 				B3A4828E2D5035DC00FCE4A5 /* FileSchemeHandler.swift */,
-				B3A4828F2D5035DC00FCE4A5 /* hyperapp.swift */,
+				B3A4828F2D5035DC00FCE4A5 /* app.swift */,
 				B3A482912D5035DC00FCE4A5 /* SingleWindow.swift */,
 				B3A482922D5035DC00FCE4A5 /* WebView.swift */,
 				B3A482992D50384100FCE4A5 /* WindowDelegate.swift */,
-				B3511D732D544B0700667676 /* hyperapp-Bridging-Header.h */,
+				B3511D732D544B0700667676 /* app-Bridging-Header.h */,
 			);
 			path = swift;
 			sourceTree = "<group>";
@@ -193,9 +193,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B323E3622D1CDAB2007BA38C /* hyperapp */ = {
+		B323E3622D1CDAB2007BA38C /* app */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B323E3742D1CDAB3007BA38C /* Build configuration list for PBXNativeTarget "hyperapp" */;
+			buildConfigurationList = B323E3742D1CDAB3007BA38C /* Build configuration list for PBXNativeTarget "app" */;
 			buildPhases = (
 				B3F62D062D489BCD0030F051 /* download model */,
 				B323E35F2D1CDAB2007BA38C /* Sources */,
@@ -206,11 +206,11 @@
 			);
 			dependencies = (
 			);
-			name = hyperapp;
+			name = app;
 			packageProductDependencies = (
 			);
 			productName = hyperapp;
-			productReference = B323E3632D1CDAB2007BA38C /* hyperapp.app */;
+			productReference = B323E3632D1CDAB2007BA38C /* app.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -229,7 +229,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B323E35E2D1CDAB2007BA38C /* Build configuration list for PBXProject "hyperapp" */;
+			buildConfigurationList = B323E35E2D1CDAB2007BA38C /* Build configuration list for PBXProject "app" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -243,7 +243,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B323E3622D1CDAB2007BA38C /* hyperapp */,
+				B323E3622D1CDAB2007BA38C /* app */,
 			);
 		};
 /* End PBXProject section */
@@ -303,11 +303,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B3511D722D544A5600667676 /* hyperapp.cpp in Sources */,
+				B3511D722D544A5600667676 /* app.cpp in Sources */,
 				B3A482932D5035DC00FCE4A5 /* SingleWindow.swift in Sources */,
 				B3A482952D5035DC00FCE4A5 /* ContentView.swift in Sources */,
 				B3A482962D5035DC00FCE4A5 /* FileSchemeHandler.swift in Sources */,
-				B3A482972D5035DC00FCE4A5 /* hyperapp.swift in Sources */,
+				B3A482972D5035DC00FCE4A5 /* app.swift in Sources */,
 				B3A482982D5035DC00FCE4A5 /* WebView.swift in Sources */,
 				B3A4829A2D50384100FCE4A5 /* WindowDelegate.swift in Sources */,
 			);
@@ -324,7 +324,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_ENTITLEMENTS = hyperapp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = app.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 200;
 				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
@@ -338,12 +338,9 @@
 					"DEBUG=1",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
-				HEADER_SEARCH_PATHS = (
-					../llama.cpp/include,
-					../llama.cpp/common,
-				);
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = hyperapp;
+				INFOPLIST_KEY_CFBundleDisplayName = app;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 Dmitry \"Leo\" Kuznetsov";
 				INFOPLIST_KEY_NSSiriUsageDescription = "This app does not require Siri.";
@@ -365,21 +362,17 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 2.2;
 				OTHER_CFLAGS = "-Wno-ambiguous-macro";
-				PRODUCT_BUNDLE_IDENTIFIER = io.github.leok7v.hyperapp;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.leok7v.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "hyperapp-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "app-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = (
-					../llama.cpp/include,
-					../llama.cpp/common,
-					../llama.cpp/ggml/include,
-				);
+				USER_HEADER_SEARCH_PATHS = "";
 				XROS_DEPLOYMENT_TARGET = 2.2;
 			};
 			name = Debug;
@@ -392,7 +385,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_ENTITLEMENTS = hyperapp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = app.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 200;
 				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
@@ -405,12 +398,9 @@
 					GGML_USE_METAL,
 				);
 				GENERATE_INFOPLIST_FILE = YES;
-				HEADER_SEARCH_PATHS = (
-					../llama.cpp/include,
-					../llama.cpp/common,
-				);
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = hyperapp;
+				INFOPLIST_KEY_CFBundleDisplayName = app;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 Dmitry \"Leo\" Kuznetsov";
 				INFOPLIST_KEY_NSSiriUsageDescription = "This app does not require Siri.";
@@ -432,20 +422,16 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 2.2;
 				OTHER_CFLAGS = "-Wno-ambiguous-macro";
-				PRODUCT_BUNDLE_IDENTIFIER = io.github.leok7v.hyperapp;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.leok7v.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "hyperapp-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "app-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = (
-					../llama.cpp/include,
-					../llama.cpp/common,
-					../llama.cpp/ggml/include,
-				);
+				USER_HEADER_SEARCH_PATHS = "";
 				XROS_DEPLOYMENT_TARGET = 2.2;
 			};
 			name = Release;
@@ -583,7 +569,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B323E35E2D1CDAB2007BA38C /* Build configuration list for PBXProject "hyperapp" */ = {
+		B323E35E2D1CDAB2007BA38C /* Build configuration list for PBXProject "app" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B323E3772D1CDAB3007BA38C /* Debug */,
@@ -592,7 +578,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B323E3742D1CDAB3007BA38C /* Build configuration list for PBXNativeTarget "hyperapp" */ = {
+		B323E3742D1CDAB3007BA38C /* Build configuration list for PBXNativeTarget "app" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B323E3752D1CDAB3007BA38C /* Debug */,

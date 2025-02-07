@@ -6,7 +6,7 @@
 #include <pthread.h>
 #include <time.h>
 #include <unistd.h>
-#include "hyperapp.h"
+#include "app.h"
 
 extern "C" {
 

@@ -121,17 +121,17 @@ class FileSchemeHandler: NSObject, WKURLSchemeHandler {
         }
     }
     
-    let allowedOrigin = "gyptix://"
+    let allowedOrigin = "app://"
     
     func response(_ u: URL, mt: String) -> HTTPURLResponse? {
         let responseHeaders = [
             "Access-Control-Allow-Origin": allowedOrigin,
             "Content-Type": mt,
             "Content-Security-Policy":
-                "default-src 'self' gyptix://;" +
-                "img-src 'self' gyptix:// data:;" +
-                "style-src 'self' gyptix:// 'unsafe-inline';" +
-                "script-src 'self' gyptix:// 'unsafe-inline';"
+                "default-src 'self' app://;" +
+                "img-src 'self' app:// data:;" +
+                "style-src 'self' app:// 'unsafe-inline';" +
+                "script-src 'self' app:// 'unsafe-inline';"
         ]
         return HTTPURLResponse(url: u,
                                statusCode: 200,

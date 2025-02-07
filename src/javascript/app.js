@@ -1,11 +1,11 @@
-import { app } from "gyptix://./hyperapp.js"
-import * as dom from "gyptix://./hyperapp.dom.js"
-import * as events from "gyptix://./hyperapp.events.js"
-import * as html from "gyptix://./hyperapp.html.js"
-import * as svg from "gyptix://./hyperapp.svg.js"
-import * as time from "gyptix://./hyperapp.time.js"
-import * as marked from "gyptix://./marked.js"
-import * as highlight from "gyptix://./highlight.min.js"
+import { app } from "app://./hyperapp.js"
+import * as dom from "app://./hyperapp.dom.js"
+import * as events from "app://./hyperapp.events.js"
+import * as html from "app://./hyperapp.html.js"
+import * as svg from "app://./hyperapp.svg.js"
+import * as time from "app://./hyperapp.time.js"
+import * as marked from "app://./marked.js"
+import * as highlight from "app://./highlight.min.js"
 
 const init = (state) => ({...state,
     trigger: 0,

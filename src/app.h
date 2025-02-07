@@ -1,5 +1,5 @@
-#ifndef GYPTIX_H
-#define GYPTIX_H
+#ifndef APP_H
+#define APP_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -15,5 +15,5 @@ void stop(void);
 }
 #endif
 
-#endif /* GYPTIX_H */
+#endif /* APP_H */
 
