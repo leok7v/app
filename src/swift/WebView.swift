@@ -2,17 +2,6 @@ import SwiftUI
 import WebKit
 
 #if os(macOS)
-import Cocoa
-
-class CustomWebView: WKWebView {
-    
-    override func willOpenMenu(_ menu: NSMenu, with event: NSEvent) {
-        #if !DEBUG // remove Reload in Release
-        if let reload = menu.item(withTitle: "Reload") { menu.removeItem(reload) }
-        #endif
-    }
-    
-}
 
 public typealias ViewRepresentable = NSViewRepresentable
 
@@ -40,14 +29,6 @@ struct WebView: ViewRepresentable {
         return try? String(contentsOf: fileURL, encoding: .utf8)
     }
     
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        #if DEBUG
-        let pd = "document.body.setAttribute('oncontextmenu', " +
-                 "'event.preventDefault();');"
-        webView.evaluateJavaScript(pd, completionHandler: nil)
-        #endif
-    }
-    
 #if os(macOS)
     func makeNSView(context: Context) -> WKWebView {
         let config = WKWebViewConfiguration()
@@ -55,7 +36,7 @@ struct WebView: ViewRepresentable {
         #if DEBUG
         config.preferences.setValue(true, forKey: "developerExtrasEnabled")
         #endif
-        let webView = CustomWebView(frame: .zero, configuration: config)
+        let webView = WKWebView(frame: .zero, configuration: config)
         webView.configuration.preferences.setValue(true,
                 forKey: "allowFileAccessFromFileURLs")
         webView.setValue(false, forKey: "drawsBackground")
