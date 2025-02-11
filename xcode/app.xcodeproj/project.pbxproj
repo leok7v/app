@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		B30518582D1CE9470009362D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B30518572D1CE9470009362D /* WebKit.framework */; };
-		B315E3712D5B463100A90028 /* highlight.min.js in Resources */ = {isa = PBXBuildFile; fileRef = B315E3652D5B463100A90028 /* highlight.min.js */; };
 		B315E3772D5B465400A90028 /* marked.js in Resources */ = {isa = PBXBuildFile; fileRef = B315E3742D5B465400A90028 /* marked.js */; };
 		B315E3782D5B465400A90028 /* svgs.css in Resources */ = {isa = PBXBuildFile; fileRef = B315E3762D5B465400A90028 /* svgs.css */; };
 		B33E9D022D4B21FA005FEE9B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B33E9D012D4B21FA005FEE9B /* PrivacyInfo.xcprivacy */; };
@@ -24,12 +23,10 @@
 		B3B3F4042D4AB3C300A2D406 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = B3B3F3FA2D4AB3C300A2D406 /* index.html */; };
 		B3B3F40A2D4AB3C300A2D406 /* app.js in Resources */ = {isa = PBXBuildFile; fileRef = B3B3F3F82D4AB3C300A2D406 /* app.js */; };
 		B3B3F40C2D4AB3C300A2D406 /* app.css in Resources */ = {isa = PBXBuildFile; fileRef = B3B3F3F72D4AB3C300A2D406 /* app.css */; };
-		B3B3F40D2D4AB3C300A2D406 /* svgs.css in Resources */ = {isa = PBXBuildFile; fileRef = B3B3F3FD2D4AB3C300A2D406 /* svgs.css */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B30518572D1CE9470009362D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.2.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
-		B315E3652D5B463100A90028 /* highlight.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = highlight.min.js; sourceTree = "<group>"; };
 		B315E3742D5B465400A90028 /* marked.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = marked.js; sourceTree = "<group>"; };
 		B315E3762D5B465400A90028 /* svgs.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = svgs.css; sourceTree = "<group>"; };
 		B323E3632D1CDAB2007BA38C /* app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = app.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -50,7 +47,6 @@
 		B3B3F3F72D4AB3C300A2D406 /* app.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = app.css; sourceTree = "<group>"; };
 		B3B3F3F82D4AB3C300A2D406 /* app.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = app.js; sourceTree = "<group>"; };
 		B3B3F3FA2D4AB3C300A2D406 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
-		B3B3F3FD2D4AB3C300A2D406 /* svgs.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = svgs.css; sourceTree = "<group>"; };
 		B3D480C72D482F3400C5D9B1 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.2.sdk/System/Library/Frameworks/Metal.framework; sourceTree = DEVELOPER_DIR; };
 		B3D480C92D482F4000C5D9B1 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.2.sdk/System/Library/Frameworks/MetalKit.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -128,13 +124,11 @@
 		B3B3F3FE2D4AB3C300A2D406 /* javascript */ = {
 			isa = PBXGroup;
 			children = (
-				B315E3652D5B463100A90028 /* highlight.min.js */,
 				B3B3F3F72D4AB3C300A2D406 /* app.css */,
 				B3B3F3F82D4AB3C300A2D406 /* app.js */,
 				B3B3F3FA2D4AB3C300A2D406 /* index.html */,
 				B315E3742D5B465400A90028 /* marked.js */,
 				B315E3762D5B465400A90028 /* svgs.css */,
-				B3B3F3FD2D4AB3C300A2D406 /* svgs.css */,
 			);
 			name = javascript;
 			path = ../src/javascript;
@@ -204,14 +198,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3756DE92D41D43100BCF111 /* Assets.xcassets in Resources */,
-				B315E3712D5B463100A90028 /* highlight.min.js in Resources */,
 				B315E3772D5B465400A90028 /* marked.js in Resources */,
 				B315E3782D5B465400A90028 /* svgs.css in Resources */,
 				B3B3F4042D4AB3C300A2D406 /* index.html in Resources */,
 				B3B3F40A2D4AB3C300A2D406 /* app.js in Resources */,
 				B33E9D022D4B21FA005FEE9B /* PrivacyInfo.xcprivacy in Resources */,
 				B3B3F40C2D4AB3C300A2D406 /* app.css in Resources */,
-				B3B3F40D2D4AB3C300A2D406 /* svgs.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

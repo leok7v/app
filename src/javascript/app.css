@@ -44,19 +44,19 @@ body {
   user-select: text;
 }
 
-.nav_header,
-.chat_header {
+.navigation_header,
+.header {
   background-color: var(--background-header);
 }
 
-.chat_layout {
+.layout {
   display: flex;
   flex-direction: row;
   height: 100vh;
   transition: all 0.3s;
 }
 
-.nav_pane {
+.navigation {
   width: 200px;
   flex: 0 0 auto;
   border-right: 1px solid #ccc;
@@ -66,13 +66,13 @@ body {
   transition: width 0.3s ease;
 }
 
-.nav_pane_collapsed {
+.collapsed {
   width: 0;
   min-width: 0;
   overflow: hidden;
 }
 
-.nav_header {
+.navigation_header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -84,11 +84,11 @@ body {
   z-index: 10;
 }
 
-#chat_list {
+#list {
   padding: 0.5rem;
 }
 
-.chat_list_item {
+.item {
   display: flex;
   align-items: center;
   gap: 0.3rem;
@@ -97,11 +97,11 @@ body {
   cursor: pointer;
 }
 
-.chat_list_item:hover {
+.item:hover {
   background-color: color-mix(in srgb, var(--background-btn) 80%, var(--color) 20%);
 }
 
-.chat_content {
+.content {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -110,7 +110,7 @@ body {
   border: none;
 }
 
-.chat_header {
+.header {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -121,15 +121,15 @@ body {
   padding: 0.5rem;
 }
 
-:not(.nav_collapsed) #expand_btn {
+:not(.is_collapsed) #expand {
   display: none;
 }
 
-.nav_collapsed #expand_btn {
+.is_collapsed #expand {
   display: block;
 }
 
-#chat_title {
+#title {
   font-weight: bold;
 }
 
@@ -190,7 +190,7 @@ body {
   text-align: right;
 }
 
-.button_small {
+.button {
   cursor: pointer;
   background-color: var(--background-btn);
   border: none;
@@ -200,11 +200,11 @@ body {
   transition: background-color 0.2s ease;
 }
 
-.button_small:hover {
+.button:hover {
   background-color: color-mix(in srgb, var(--background-btn) 80%, var(--color) 20%);
 }
 
-#scroll_btn {
+#scroll {
   position: absolute;
   bottom: 1.0rem;
   left: 50%;
@@ -214,26 +214,26 @@ body {
   cursor: pointer;
 }
 
-.circle-btn {
+.circled {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    border-radius: 50%; /* Makes it a circle */
+    border-radius: 50%;
     border: 2px solid var(--color);
     background-color: var(--background-color-btn);
     text-align: center;
     cursor: pointer;
 }
 
-[data-theme="dark"] .button_small .glyph {
+[data-theme="dark"] .button .glyph {
   filter: invert(1) grayscale(1);
 }
 
-#scroll_btn .glyph {
+#scroll .glyph {
   filter: invert(1) grayscale(1);
 }
 
-[data-theme="light"] #scroll_btn .glyph {
+[data-theme="light"] #scroll .glyph {
   filter: none;
   transform: rotate(180deg);
   display: inline-block;
