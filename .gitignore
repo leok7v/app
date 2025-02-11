@@ -3,7 +3,8 @@ xcode/DerivedData/*
 .DS_Store
 **/.DS_Store
 *.iml
-/andoid/.gradle
+/android/.idea/.name
+/android/.gradle
 /android/local.properties
 /android/.idea/caches
 /android/.idea/libraries

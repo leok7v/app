@@ -1,342 +1,289 @@
-import { app } from "app://./hyperapp.js"
-import * as dom from "app://./hyperapp.dom.js"
-import * as events from "app://./hyperapp.events.js"
-import * as html from "app://./hyperapp.html.js"
-import * as svg from "app://./hyperapp.svg.js"
-import * as time from "app://./hyperapp.time.js"
 import * as marked from "app://./marked.js"
-import * as highlight from "app://./highlight.min.js"
 
-const init = (state) => ({...state,
-    trigger: 0,
-    count: 0,
-    n: 99,
-    s: "str",
-    page: 0,
-})
+(() => {
+  "use strict"
+  const get              = id => document.getElementById(id)
 
-const save = state => {
-  localStorage.setItem("data", JSON.stringify(state.data))
-  return state
-}
+  const chat_header      = get("chat_header")
+  const chat_list        = get("chat_list")
+  const chat_title       = get("chat_title")
+  const clear_all_btn    = get("clear_all_btn")
+  const collapse_btn     = get("collapse_btn")
+  const content          = get("content")
+  const expand_btn       = get("expand_btn")
+  const layout           = get("layout")
+  const message_input    = get("message_input")
+  const menu             = get("menu")
+  const menu_btn_delete  = get("btn_delete")
+  const menu_btn_rename  = get("btn_rename")
+  const menu_btn_share   = get("btn_share")
+  const messages         = get("messages")
+  const nav              = get("nav")
+  const nav_header       = get("nav_header")
+  const new_chat_btn     = get("new_chat_btn")
+  const scroll_btn       = get("scroll_btn")
+  const send_btn         = get("send_btn")
+  const toggle_theme_btn = get("toggle_theme_btn")
 
-const load = state => {
-  try {
-    const stored = localStorage.getItem("data")
-    return stored ? { ...state, data: JSON.parse(stored) } : state
-  } catch (e) {
-    return state
+  let current_chat_key = null
+  let press_timer = null
+  let long_pressed_item_key = null
+  const long_press_threshold = 500
+
+  document.addEventListener("copy", e => {
+    e.preventDefault()
+    const s = window.getSelection().toString()
+    e.clipboardData.setData("text/plain", s)
+  })
+
+  const get_chat_data = k => {
+    const s = localStorage.getItem(k)
+    return s ? JSON.parse(s) : []
   }
-}
 
-const clear = state => {
-  localStorage.clear()
-  return { ...state, data: init(state) }
-}
+  const save_chat_data = (k, a) =>
+    localStorage.setItem(k, JSON.stringify(a))
 
-const trigger_inc = (state) => ({ ...state, trigger: state.trigger + 1 })
-const trigger_dec = (state) => ({ ...state, trigger: state.trigger > 0 ? state.trigger - 1 : 0 })
+  const render_markdown = md => marked.parse(md)
 
-const notify = state => {
-    console.log("notify")
-    return { ...state, ...trigger_inc }
-}
+  const render_messages = k => {
+    const arr = get_chat_data(k)
+    messages.innerHTML = ""
+    for (let i = 0; i < arr.length; i++) {
+      const d = document.createElement("div")
+      d.className = arr[i].sender === "user" ? "message_user" : "message_bot"
+      d.innerHTML = render_markdown(arr[i].text)
+      messages.appendChild(d)
+    }
+    messages.scrollTop = messages.scrollHeight
+    chat_title.textContent = k
+  }
 
-const notified = state => {
-    console.log("notified")
-    return { ...state, ...trigger_dec(state) }
-}
+    const rebuild_chat_list = () => {
+    chat_list.innerHTML = ""
+    const count = localStorage.length
+    for (let i = count; i >= 0; i--) {
+      const key = localStorage.key(i)
+      if (!key) continue
+      const div = document.createElement("div")
+      div.className = "chat_list_item"
+      const span = document.createElement("span")
+      span.textContent = key
+      const dot_btn = document.createElement("button")
+      dot_btn.className = "button_small"
+      dot_btn.textContent = "⋮"
+      dot_btn.onclick = e => {
+        e.stopPropagation()
+        long_pressed_item_key = key
+        show_menu(e.pageX, e.pageY)
+      }
+      div.appendChild(span)
+      div.appendChild(dot_btn)
+      div.onmousedown = e => {
+        press_timer = setTimeout(() => {
+          long_pressed_item_key = key
+          show_menu(e.pageX, e.pageY)
+        }, long_press_threshold)
+      }
+      div.onmouseup = () => clearTimeout(press_timer)
+      div.onmouseleave = () => clearTimeout(press_timer)
+      div.onclick = () => {
+        if (long_pressed_item_key) return
+        current_chat_key = key
+        render_messages(key)
+      }
+      chat_list.appendChild(div)
+    }
+  }
 
-const get_by_id = id => document.getElementById(id)
-const get_by_sel = sel => document.querySelector(sel)
+  const get_time_label = () => {
+    const d = new Date()
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    const w = days[d.getDay()]
+    const hh = String(d.getHours()).padStart(2, "0")
+    const mm = String(d.getMinutes()).padStart(2, "0")
+    const ss = String(d.getSeconds()).padStart(2, "0")
+    return `${w} ${hh}:${mm}:${ss}`
+  }
 
-const page1_md =
-    "# About\n" +
-    "\n" +
-    "## About the App\n" +
-    "\n" +
-    "### version 25.02.5\n" +
-    "\n" +
-    "* About Item 1\n" +
-    "* About Item 2\n" +
-    "\n" +
-    "*Marked.js*\n" +
-    "\n" +
-    "Copyright (c) 2018+, MarkedJS\n" +
-    "[github.com/markedjs/](https://github.com/markedjs/)\n" +
-    "\n" +
-    "Copyright (c) 2011-2018, Christopher Jeffrey\n" +
-    "[github.com/chjj/](https://github.com/chjj/)\n" +
-    "\n" +
-    "*Highlight.js*\n" +
-    "\n" +
-    "(c) 2006-2024 Josh Goebel <hello@joshgoebel.com> and other contributors\n" +
-    "License: BSD-3-Clause\n"
+  const create_new_chat = () => {
+    let k = get_time_label()
+    while (localStorage.getItem(k)) {
+      k = get_time_label()
+    }
+    localStorage.setItem(k, "[]")
+    current_chat_key = k
+    const arr = [{
+      sender: "bot",
+      text: "What do you want to talk about today?<br>" +
+            "Use long sentences please (I am not very smart yet)"
+    }]
+    save_chat_data(k, arr)
+    current_chat_key = k
+    rebuild_chat_list()
+    render_messages(k)
+  }
 
-const page2_md =
-    "# Story\n" +
-    "\n" +
-    "* Story Item 1\n" +
-    "* Story Item 2\n\n" +
-    "\n" +
-    "**Earth**\n" +
-    "\n" +
-    "~~Harmless~~\n" +
-    "\n" +
-    "*Mostly* harmless...\n" +
-    "\n" +
-    "The overriding design goal for Markdown's formatting " +
-    "syntax is to make it as readable as possible. The idea is " +
-    "that a Markdown-formatted document should be publishable " +
-    "as-is, as plain text, without looking like it's been marked " +
-    "up with tags or formatting instructions."
-
-const page3_md =
-    "# Fancy button\n" +
-    "\n" +
-    "* Button has CSS inline SVG as a picture\n" +
-    "* Button has rounded rectangle around 1x1em box\n" +
-    "* On hover rectangle is highlighted\n" +
-    "* On load (after 1-2 seconds delay) a glyph " +
-    "(👆 or 👉 or 👈) appears and blinks a few times next " +
-    "to the button\n* Button should also support a red " +
-    "blinking dot when requested (blink 3 times and fade out)"
-
-const page4_md =
-    "# Code:\n" +
-    "\n" +
-    "# Hello World\n" +
-    "\n" +
-    "C programming language" +
-    "\n" +
-    "```C\n" +
-    "int main(int argc, const char* argv[]) {\n" +
-    "    printf(\"Hello World!\\n\");\n" +
+  const md =
+    "# Lorem ipsum\n\n" +
+    "# Dolor sit amet\n\n" +
+    "# Consectetur\n\n" +
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+    "sed do eiusmod tempor incididunt ut labore et dolore " +
+    "magna aliqua.\n\n" +
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+    "sed do eiusmod tempor incididunt ut labore et dolore " +
+    "magna aliqua.\n\n" +
+    "### C\n\n" +
+    "```c\n" +
+    "int main(void) {\n" +
+    "    return 0\n" +
     "}\n" +
-    "```\n" +
-    "\n" +
-    "compile & run:\n" +
-    "\n" +
-    "```bash\n" +
-    "gcc hello.c\n" +
-    "./a.out\n" +
-    "```\n" +
-    "\n" +
-    "## JavaScript Hello World\n" +
-    "\n" +
-    "```javascript\n" +
-    "console.log(\"Hello, world!\");\n" +
-    "```\n" +
-    "\n" +
-    "## Python Hello World\n" +
-    "\n" +
+    "```\n\n" +
+    "### Python\n\n" +
     "```python\n" +
     "print(\"Hello, world!\")\n" +
-    "```\n";
+    "```\n\n" +
+    "### JavaScript\n\n" +
+    "```javascript\n" +
+    "console.log(\"Hello, world!\")\n" +
+    "```\n\n" +
+    "* Lorem\n" +
+    "* Ipsum\n" +
+    "* Magna\n\n"
 
-const set_focus = (state, id) => [state, dom.focus(id)]
-const inc_and_set_focus = (state, id) => [
-  { ...state, data: { ...state.data, n: state.data.n + 1 } },
-  dom.focus(id)
-]
-const noop = state => state
-const focused = state => [state, dom.focus("id1")]
-const inc = state => [
-  { ...state, data: { ...state.data, n: state.data.n + 1 } },
-  dom.focus("id2")
-]
+  const send_message = t => {
+    if (!current_chat_key || !t) return
+    const arr = get_chat_data(current_chat_key)
+    arr.push({ sender: "user", text: t })
+    arr.push({ sender: "bot", text: md })
+    save_chat_data(current_chat_key, arr)
+    render_messages(current_chat_key)
+  }
 
-const toggle = state => ({ ...state, expanded: !state.expanded })
-const reset = state => clear(state)
-const share = state => { console.log("share"); return state }
-const settings = state => { console.log("settings"); return state }
-const profile = state => { console.log("profile"); return state }
-const back = state => [ { ...state, data: { ...state.data, page: 0 } } ]
+  const show_menu = (x, y) => {
+    menu.style.left = `${x}px`
+    menu.style.top = `${y}px`
+    menu.style.display = "block"
+  }
 
-const callbacks = {
-  reset, share, settings, profile, toggle, focused, inc, back,
-  save, load, clear
-}
+  const hide_menu = () => {
+    menu.style.display = "none"
+    long_pressed_item_key = null
+  }
 
-const action = (name, label) =>
-  html.button(
-    {
-      class: name === "toggle" ? "btn toggle" : "btn",
-      onclick: (s, e) => {
-          e.stopPropagation()
-          return (callbacks[name] || noop)(s, e)
-      }
-    },
-    html.text(label)
-  )
-
-const page = (i, label) =>
-  html.button(
-    {
-      class: "nav-page-btn",
-      onclick: s => ({ ...s, data: { ...s.data, page: i } })
-    },
-    html.text(label)
-  )
-
-const highlightAllCodeBlocks = (node) => {
-  node.querySelectorAll('pre code').forEach(block => {
-    hljs.highlightBlock(block);
-  });
-}
-
-const renderPage = state => {
-    let md = ""
-    switch(state.data.page) {
-        case 0: return page0(state)
-        case 1: md = page1_md; break
-        case 2: md = page2_md; break
-        case 3: md = page3_md; break
-        case 4: md = page4_md; break
-        default: md = ""
+  menu_btn_delete.onclick = () => {
+    if (!long_pressed_item_key) return
+    localStorage.removeItem(long_pressed_item_key)
+    if (current_chat_key === long_pressed_item_key)
+      current_chat_key = null
+    rebuild_chat_list()
+    if (!localStorage.length) {
+      create_new_chat()
+    } else if (!current_chat_key) {
+      const k = localStorage.key(0)
+      current_chat_key = k
+      render_messages(k)
     }
-    const parsed = marked.parse(md)
-    return html.div({ class: "page" }, [
-        html.button({ class: "btn close-btn", onclick: back }, html.text("❎")),
-        html.div({ class: "markdown-content", innerHTML: parsed })
-    ])
-}
+    hide_menu()
+  }
 
-const hide_nav_if_overlap = state => {
-  if (state.expanded) {
-    const nav = get_by_sel(".nav.expanded")
-    if (nav) {
-      const overlap = getComputedStyle(nav)
-        .getPropertyValue("--nav-overlap")
-        .trim()
-      if (overlap === "true")
-        return { ...state, expanded: false }
+  menu_btn_rename.onclick = () => {
+    if (!long_pressed_item_key) return
+    const new_name = prompt("Enter new name", long_pressed_item_key)
+    if (new_name && new_name !== long_pressed_item_key) {
+      const data = get_chat_data(long_pressed_item_key)
+      localStorage.removeItem(long_pressed_item_key)
+      localStorage.setItem(new_name, JSON.stringify(data))
+      if (current_chat_key === long_pressed_item_key)
+        current_chat_key = new_name
+      rebuild_chat_list()
+      render_messages(current_chat_key)
+    }
+    hide_menu()
+  }
+
+  menu_btn_share.onclick = () => {
+    if (!long_pressed_item_key) return
+    const data = get_chat_data(long_pressed_item_key)
+    prompt("Copy chat data:", JSON.stringify(data))
+    hide_menu()
+  }
+
+  document.body.onclick = e => {
+    if (e.target.id !== "menu" && !menu.contains(e.target) && long_pressed_item_key)
+      hide_menu()
+  }
+
+  new_chat_btn.onclick = () => create_new_chat()
+
+  clear_all_btn.onclick = () => {
+    localStorage.clear()
+    current_chat_key = null
+    create_new_chat()
+  }
+
+  collapse_btn.onclick = () => {
+    nav.classList.add("nav_pane_collapsed")
+    layout.classList.add("nav_collapsed")
+  }
+
+  expand_btn.onclick = () => {
+    nav.classList.remove("nav_pane_collapsed")
+    layout.classList.remove("nav_collapsed")
+  }
+
+  scroll_btn.onclick = () => {
+    messages.scrollTop = messages.scrollHeight
+  }
+
+  message_input.onkeydown = e => {
+    if (message_input.innerText !== "" && e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault()
+      send_message(message_input.innerText.trim())
+      message_input.innerText = ""
     }
   }
-  return state
-}
 
-const nav_header = state =>
-  html.div({ class: "header" }, [
-    html.div({ class: "header-left" }, [
-      action("toggle", "🔽"),
-      html.span({}, html.text("_"))
-    ]),
-    action("reset", "🆕")
-  ])
-
-const main_header = state =>
-  html.div({ class: "header" }, [
-    html.div({ class: "header-left" }, [
-      !state.expanded ? action("toggle", "🔽") : null,
-      !state.expanded ? action("reset", "🆕") : null,
-      html.span({}, html.text("🙈"))
-    ]),
-    html.div({ class: "header-right" }, [
-      action("share", "📤"),
-      action("settings", "🎛"),
-      action("profile", "👤"),
-      action("save", "💾"),
-      action("load", "📥"),
-      action("clear", "🗑")
-    ])
-  ])
-
-const page0 = state => [
-  html.div(
-    { class: "in", id: "id1", contenteditable: "plaintext-only" },
-    html.text("state.data .s: " +
-      state.data.s + " .n: " + state.data.n)
-  ),
-  action("focused", "🎯"),
-  html.hr(),
-  html.div(
-    { class: "in", id: "id2", contenteditable: "plaintext-only" },
-    html.text("state.data .s: " +
-      state.data.s + " .n: " + state.data.n)
-  ),
-  action("inc", "🐲")
-]
-
-const updated = state => {
-    console.log("updated")
-    return state
-}
-
-const view = state =>
-    html.div({ class: "app-container" }, [
-    html.div({ class: "container" }, [
-      state.expanded
-        ? html.div({ class: "nav expanded" }, [
-            nav_header(state),
-            html.div({ class: "nav-content" }, [
-              html.div({}, page(0, "Chat")),
-              html.div({}, page(1, "About")),
-              html.div({}, page(2, "Story")),
-              html.div({}, page(3, "👪")),
-              html.div({}, page(4, "Code"))
-            ])
-        ])
-        : null,
-      html.div(
-        {
-          class: "main-content",
-          onclick: hide_nav_if_overlap,
-          onmousedown: hide_nav_if_overlap,
-          onfocus: hide_nav_if_overlap,
-          onupdate: updated,
-        },
-        [
-          main_header(state),
-          html.main(renderPage(state))
-        ]
-      )
-    ])
-  ])
-
-const tick = state => state.data.trigger > 0 ? notify(state) : state
-
-const stateMiddleware = fn => dispatch => (action, payload) => {
-    if (Array.isArray(action) && typeof action[0] !== 'function') {
-        action = [fn(action[0]), ...action.slice(1)]
-    } else if (!Array.isArray(action) && typeof action !== 'function') {
-        action = fn(action)
+  send_btn.onclick = e => {
+    e.preventDefault()
+    if (message_input.innerText !== "") {
+      send_message(message_input.innerText.trim())
+      message_input.innerText = ""
     }
-    // pass on to original dispatch
-    dispatch(action, payload)
-}
-
-const logStateMiddleware = stateMiddleware(state => {
-  console.log('STATE:', state)
-  return state
-})
-
-const logActionsMiddleware = dispatch => (action, payload) => {
-  if (typeof action === 'function') {
-    console.log('DISPATCH: ', action.name || action)
+    requestAnimationFrame(() => message_input.focus())
   }
-  // pass on to original dispatch
-  dispatch(action, payload)
-}
 
-const immutableProxy = o => { // a proxy prohibiting mutation
-  if (o===null || typeof o !== 'object') return o
-  return new Proxy(o, {
-    get(obj, prop) {
-      return immutableProxy(obj[prop])
-    },
-    set(obj, prop) {
-      throw new Error(`Can not set prop ${prop} on immutable object`)
+  message_input.oninput = () => {
+    const lines = message_input.innerText.split("\n").length
+    message_input.style.maxHeight = lines > 1 ? window.innerHeight * 0.5 + "px" : ""
+  }
+
+  content.onclick = e => {
+    if (e.target === message_input) {
+      nav.classList.add("nav_pane_collapsed")
+      layout.classList.add("nav_collapsed")
     }
-  })
-}
+  }
 
-const immutableMiddleware = stateMiddleware(state => immutableProxy(state))
+  messages.onscroll = () => {
+    scroll_btn.style.display =
+      messages.scrollHeight - messages.scrollTop > messages.clientHeight + 10
+        ? "block"
+        : "none"
+  }
 
-app({
-    init: { expanded: false, data: init({}) },
-    subscriptions: state => [ time.every(1000, tick) ],
-    view,
-    dispatch: dispatch => logStateMiddleware(logActionsMiddleware(immutableMiddleware(dispatch))),
-    node: get_by_id("app"),
-})
+  toggle_theme_btn.onclick = () => {
+    const html = document.documentElement
+    const current = html.getAttribute("data-theme")
+    html.setAttribute("data-theme", current === "dark" ? "light" : "dark")
+  }
+
+  rebuild_chat_list()
+  if (!localStorage.length) {
+    create_new_chat()
+  } else {
+    current_chat_key = localStorage.key(0)
+    render_messages(current_chat_key)
+  }
+})()

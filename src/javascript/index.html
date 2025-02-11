@@ -1,10 +1,72 @@
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>App</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    </head>
-    <body><main id=app></main></body>
-    <style>@import "app://./app.css";</style>
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <title>App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="app://./app.css" />
+    <script type="module" src="app://./marked.js"></script>
     <script type="module" src="app://./app.js"></script>
+</head>
+<body>
+  <div id="layout" class="chat_layout nav_collapsed">
+    <div id="nav" class="nav_pane nav_pane_collapsed">
+      <div id="nav_header" class="nav_header">
+        <button id="collapse_btn" class="button_small">
+          <span class="glyph">☰</span>
+        </button>
+        <button id="clear_all_btn" class="button_small">
+          <span class="glyph">🧹</span>
+        </button>
+      </div>
+      <div id="chat_list"></div>
+    </div>
+    <div id="content" class="chat_content">
+      <div id="chat_header" class="chat_header">
+        <button id="expand_btn" class="button_small">
+          <span class="glyph">☰</span>
+        </button>
+        <button id="new_chat_btn" class="button_small">
+          <span class="glyph">✚</span>
+        </button>
+        <span id="chat_title"></span>
+        <span style="flex:1;"></span>
+        <button id="toggle_theme_btn" class="button_small">
+          <span class="glyph">◐</span>
+        </button>
+      </div>
+      <div id="messages"></div>
+      <div id="scroll_btn" class="button_small circle-btn">↓</div> <!-- no span -->
+      <div class="input_container">
+         <div id="message_input" contenteditable="true" placeholder="⇧⏎"></div>
+         <div class="button_row">
+            <button id="send_btn" class="button_small">
+              <span class="glyph">⇧</span>
+            </button>
+         </div>
+      <div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div id="menu">
+    <button id="btn_delete" class="button_small">
+          <span class="glyph">🗑️</span>
+    </button>
+    <button id="btn_rename" class="button_small">
+          <span class="glyph">⋯</span>
+    </button>
+    <button id="btn_share" class="button_small">
+          <span class="glyph">⤴</span>
+    </button>
+  </div>
+  <script src="app.js"></script>
+</body>
 </html>

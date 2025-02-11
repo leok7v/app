@@ -1,201 +1,255 @@
-@import "app://./pure-min.css";
-
+/* Basic dark/light theme rules */
 @media (prefers-color-scheme: dark) {
-    :root {
-        background-color: #020202;
-        color: #fefefe;
-        --nav-color: #171717;
-        --button-highlight: #444;
-    }
+  :root {
+    background-color: #121212;
+    color: #f0f0f0;
+  }
 }
 
 @media (prefers-color-scheme: light) {
-    :root {
-        background-color: #f0f0f0;
-        color: #101010;
-        --nav-color: #d0d0d0;
-        --button-highlight: #ccc;
-    }
+  :root {
+    --background-color: #101010;
+    --color: #f0f0f0;
+  }
+}
+
+[data-theme="dark"] {
+  --background-color: #121212;
+  --color: #f0f0f0;
+}
+
+[data-theme="light"] {
+  --background-color: #f0f0f0;
+  --color: #121212;
+}
+
+:root {
+  --background-header: color-mix(in srgb, var(--background-color) 90%, var(--color) 10%);
+  --background-user: color-mix(in srgb, var(--background-color) 90%, var(--color) 10%);
+  --background-bot: color-mix(in srgb, var(--background-color) 95%, var(--color) 5%);
+  --background-btn: color-mix(in srgb, var(--background-color) 80%, var(--color) 20%);
 }
 
 body {
-    font-size: 1.5em;
-    margin: 0;
-    height: 100vh;
+  margin: 0;
+  font-family: sans-serif;
+  overflow: hidden;
+  background-color: var(--background-color);
+  color: var(--color);
+  user-select: none;
 }
 
-.app-container {
-    position: relative;
+.message_user,
+.message_bot {
+  user-select: text;
 }
 
-.container {
-    display: flex;
-    height: 100vh;
+.nav_header,
+.chat_header {
+  background-color: var(--background-header);
 }
 
-.nav {
-    background-color: var(--nav-color);
-    padding: 0.25em;
-    box-sizing: border-box;
-    transition: width 0.3s, transform 0.3s;
-    position: relative;
-    border: 1pt solid #888;
-    border-radius: 0.25em;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+.chat_layout {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  transition: all 0.3s;
 }
 
-.nav-content {
-    overflow-y: auto; /* Enable scrolling for content */
-    flex: 1; /* Allow content to take available space */
-    padding-top: 0.25em; /* Ensure spacing below header */
+.nav_pane {
+  width: 200px;
+  flex: 0 0 auto;
+  border-right: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  transition: width 0.3s ease;
 }
 
-.nav.expanded {
-    width: 35%;
+.nav_pane_collapsed {
+  width: 0;
+  min-width: 0;
+  overflow: hidden;
 }
 
-.nav.collapsed {
-    width: 0;
-    overflow-y: none;
+.nav_header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid #ccc;
+  z-index: 10;
 }
 
-.main-content {
-    flex: 1;
-    padding: 0.25em;
-    box-sizing: border-box;
-    position: relative;
-    border: 1pt solid #888;
-    border-radius: 0.25em;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    overflow: hidden;
+#chat_list {
+  padding: 0.5rem;
 }
 
-.page {
-    font-size: 0.75em;
-    background: inherit;
-    padding: 1em;
-    box-sizing: border-box;
-    overflow-y: auto;
-    flex: 1;
-    max-height: calc(100vh - 3em); /* Adjust for header space */
+.chat_list_item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0.3rem 0;
+  padding: 0.2rem;
+  cursor: pointer;
 }
 
-.header {
-    display: flex;
+.chat_list_item:hover {
+  background-color: color-mix(in srgb, var(--background-btn) 80%, var(--color) 20%);
+}
+
+.chat_content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.3s;
+  border: none;
+}
+
+.chat_header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid #ccc;
+  z-index: 10;
+  padding: 0.5rem;
+}
+
+:not(.nav_collapsed) #expand_btn {
+  display: none;
+}
+
+.nav_collapsed #expand_btn {
+  display: block;
+}
+
+#chat_title {
+  font-weight: bold;
+}
+
+#messages {
+  position: relative;
+  flex: 1;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.message_user {
+  background: var(--background-bot);
+  margin: 0.3rem;
+  padding: 0.3rem;
+  border-radius: 4px;
+}
+
+.message_bot {
+  background: var(--background-user);
+  margin: 0.3rem;
+  padding: 0.3rem;
+  border-radius: 4px;
+}
+
+.input_container {
+  border: 1px solid #888;
+  border-radius: 0.5rem;
+  background-color: color-mix(in srgb, var(--background-color) 95%, var(--color) 5%);
+  padding: 0.5rem;
+  margin: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+#message_input {
+  border: 0;
+  min-height: 1.5rem;
+  outline: none;
+  resize: none;
+  overflow: auto;
+}
+
+#message_input:empty::before {
+  content: "Ask anything... Use ⇧⏎ for new line";
+  pointer-events: none;
+  color: #888; /* adjust as desired */
+}
+
+#message_input:focus:empty::before {
+  content: "";
+}
+
+.button_row {
+  text-align: right;
+}
+
+.button_small {
+  cursor: pointer;
+  background-color: var(--background-btn);
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+.button_small:hover {
+  background-color: color-mix(in srgb, var(--background-btn) 80%, var(--color) 20%);
+}
+
+#scroll_btn {
+  position: absolute;
+  bottom: 1.0rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99999;
+  display: none;
+  cursor: pointer;
+}
+
+.circle-btn {
+    display: inline-flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
-    gap: 0.25em;
-    margin-bottom: 0.25em;
-}
-
-.header-left {
-    display: flex;
-    align-items: center;
-    gap: 0.25em;
-}
-
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 0.25em;
-}
-
-@media (max-width: 320px) {
-    .container {
-        position: relative;
-    }
-    .nav.expanded {
-        --nav-overlap: true;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 25vw;
-        min-width: max-content;
-        height: 100%;
-        z-index: 2;
-    }
-    .main-content {
-        width: 100%;
-    }
-}
-
-.btn {
-    color: inherit;
-    font-size: 0.75em;
-    width: 1.25em;
-    height: 1.25em;
-    padding: 0;
-    border: 1px solid #888;
-    border-radius: 0.25em;
-    background: transparent;
+    border-radius: 50%; /* Makes it a circle */
+    border: 2px solid var(--color);
+    background-color: var(--background-color-btn);
+    text-align: center;
     cursor: pointer;
-    transition: transform 0.2s ease,
-        background-color 0.2s ease;
 }
 
-.btn:focus {
-    outline: none;
-    background-color: #888;
+[data-theme="dark"] .button_small .glyph {
+  filter: invert(1) grayscale(1);
 }
 
-.nav .header .btn.toggle {
-    transform: rotate(90deg);
+#scroll_btn .glyph {
+  filter: invert(1) grayscale(1);
 }
 
-.main-content .header .btn.toggle {
-    transform: rotate(270deg);
+[data-theme="light"] #scroll_btn .glyph {
+  filter: none;
+  transform: rotate(180deg);
+  display: inline-block;
 }
 
-.in {
-    border: 1pt solid #888;
-    max-width: 10em;
+#menu {
+  position: absolute;
+  display: none;
+  border: 1px solid #888;
+  background-color: var(--background-color);
+  z-index: 99999;
+  padding: 0.3rem;
 }
 
-.in:focus {
-    border-color: red;
-}
-
-.nav-page-btn {
-    font-size: 9pt;
-    color: inherit;
-    display: block;
-    width: calc(100% - 1em);
-    margin: 0.25em auto;
-    padding: 0.25em;
-    border: 1px solid #888;
-    border-radius: 0.25em;
-    background: transparent;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.nav-page-btn:hover,
-.nav-page-btn:focus {
-    background-color: var(--button-highlight);
-}
-
-.page .close-btn {
-    position: top;
-    top: 0.25em;
-    right: 0.25em;
-    font-size: 1em;
-    background: transparent;
-    border: 1px solid #888;
-    border-radius: 0.25em;
-    padding: 0.25em;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.page .close-btn:hover,
-.page .close-btn:focus {
-    background-color: #888;
-}
-
-.markdown-content {
-    margin-top: 3em;
+#menu button {
+  margin: 0.2rem;
+  cursor: pointer;
+  background-color: var(--background-btn);
 }
