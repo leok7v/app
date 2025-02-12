@@ -1,217 +1,218 @@
-/* Basic dark/light theme rules */
 @media (prefers-color-scheme: dark) {
-  :root {
-    background-color: #121212;
-    color: #f0f0f0;
-  }
+    :root {
+        background-color: #121212;
+        color: #f0f0f0;
+    }
 }
 
 @media (prefers-color-scheme: light) {
-  :root {
-    --background-color: #101010;
-    --color: #f0f0f0;
-  }
+    :root {
+        --background-color: #101010;
+        --color: #f0f0f0;
+    }
 }
 
 [data-theme="dark"] {
-  --background-color: #121212;
-  --color: #f0f0f0;
+    --background-color: #121212;
+    --color: #f0f0f0;
 }
 
 [data-theme="light"] {
-  --background-color: #f0f0f0;
-  --color: #121212;
+    --background-color: #f0f0f0;
+    --color: #121212;
 }
 
 :root {
-  --background-header: color-mix(in srgb, var(--background-color) 90%, var(--color) 10%);
-  --background-user: color-mix(in srgb, var(--background-color) 90%, var(--color) 10%);
-  --background-bot: color-mix(in srgb, var(--background-color) 95%, var(--color) 5%);
-  --background-btn: color-mix(in srgb, var(--background-color) 80%, var(--color) 20%);
+    --background-header: color-mix(in srgb, var(--background-color) 90%, var(--color) 10%);
+    --background-user: color-mix(in srgb, var(--background-color) 90%, var(--color) 10%);
+    --background-bot: color-mix(in srgb, var(--background-color) 95%, var(--color) 5%);
+    --background-btn: color-mix(in srgb, var(--background-color) 80%, var(--color) 20%);
 }
 
 body {
-  margin: 0;
-  font-family: sans-serif;
-  overflow: hidden;
-  background-color: var(--background-color);
-  color: var(--color);
-  user-select: none;
+    margin: 0;
+    font-family: sans-serif;
+    overflow: hidden;
+    background-color: var(--background-color);
+    color: var(--color);
+    user-select: none;
 }
 
 .message_user,
 .message_bot {
-  user-select: text;
+    user-select: text;
 }
 
 .navigation_header,
 .header {
-  background-color: var(--background-header);
+    background-color: var(--background-header);
 }
 
 .layout {
-  display: flex;
-  flex-direction: row;
-  height: 100vh;
-  transition: all 0.3s;
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    transition: all 0.3s;
 }
 
 .navigation {
-  width: 200px;
-  flex: 0 0 auto;
-  border-right: 1px solid #ccc;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  transition: width 0.3s ease;
+    width: 200px;
+    height: auto;
+    max-height: 100vh;
+    flex: 0 0 auto;
+    border-right: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    transition: width 0.3s ease;
 }
 
 .collapsed {
-  width: 0;
-  min-width: 0;
-  overflow: hidden;
+    width: 0;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .navigation_header {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.5rem;
-  padding: 0.5rem;
-  position: sticky;
-  top: 0;
-  border-bottom: 1px solid #ccc;
-  z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid #ccc;
+    z-index: 10;
 }
 
 #list {
-  padding: 0.5rem;
+    padding: 0.5rem;
 }
 
 .item {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  margin: 0.3rem 0;
-  padding: 0.2rem;
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin: 0.3rem 0;
+    padding: 0.2rem;
+    cursor: pointer;
 }
 
 .item:hover {
-  background-color: color-mix(in srgb, var(--background-btn) 80%, var(--color) 20%);
+    background-color: color-mix(in srgb, var(--background-btn) 80%, var(--color) 20%);
 }
 
 .content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  transition: all 0.3s;
-  border: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: all 0.3s;
+    border: none;
 }
 
 .header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  position: sticky;
-  top: 0;
-  border-bottom: 1px solid #ccc;
-  z-index: 10;
-  padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid #ccc;
+    z-index: 10;
+    padding: 0.5rem;
 }
 
 :not(.is_collapsed) #expand {
-  display: none;
+    display: none;
 }
 
 .is_collapsed #expand {
-  display: block;
+    display: block;
 }
 
 #title {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 #messages {
-  position: relative;
-  flex: 1;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  margin: 0;
-  padding: 0;
-  border: 0;
+    position: relative;
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    margin: 0;
+    padding: 0;
+    border: 0;
 }
 
 .message_user {
-  background: var(--background-bot);
-  margin: 0.3rem;
-  padding: 0.3rem;
-  border-radius: 4px;
+    background: var(--background-bot);
+    margin: 0.3rem;
+    padding: 0.3rem;
+    border-radius: 4px;
 }
 
 .message_bot {
-  background: var(--background-user);
-  margin: 0.3rem;
-  padding: 0.3rem;
-  border-radius: 4px;
+    background: var(--background-user);
+    margin: 0.3rem;
+    padding: 0.3rem;
+    border-radius: 4px;
 }
 
 .input_container {
-  border: 1px solid #888;
-  border-radius: 0.5rem;
-  background-color: color-mix(in srgb, var(--background-color) 95%, var(--color) 5%);
-  padding: 0.5rem;
-  margin: 0.3rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+    border: 1px solid #888;
+    border-radius: 0.5rem;
+    background-color: color-mix(in srgb, var(--background-color) 95%, var(--color) 5%);
+    padding: 0.5rem;
+    margin: 0.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
-#message_input {
-  border: 0;
-  min-height: 1.5rem;
-  outline: none;
-  resize: none;
-  overflow: auto;
+#input {
+    border: 0;
+    min-height: 1.5rem;
+    outline: none;
+    resize: none;
+    overflow: auto;
 }
 
-#message_input:empty::before {
-  content: "Ask anything... Use ⇧⏎ for new line";
-  pointer-events: none;
-  color: #888; /* adjust as desired */
+#input:empty::before {
+    content: "Ask anything... Use ⇧⏎ for new line";
+    pointer-events: none;
+    color: #888;
 }
 
-#message_input:focus:empty::before {
-  content: "";
+#input:focus:empty::before {
+    content: "";
 }
 
 .button_row {
-  text-align: right;
+    text-align: right;
 }
 
 .button {
-  cursor: pointer;
-  background-color: var(--background-btn);
-  border: none;
-  border-radius: 0.25rem;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.9rem;
-  transition: background-color 0.2s ease;
+    cursor: pointer;
+    background-color: var(--background-btn);
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
 }
 
 .button:hover {
-  background-color: color-mix(in srgb, var(--background-btn) 80%, var(--color) 20%);
+    background-color: color-mix(in srgb, var(--background-btn) 80%, var(--color) 20%);
 }
 
 #scroll {
-  position: absolute;
-  bottom: 1.0rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 99999;
-  display: none;
-  cursor: pointer;
+    position: absolute;
+    bottom: 1.0rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99999;
+    display: none;
+    cursor: pointer;
 }
 
 .circled {
@@ -226,30 +227,30 @@ body {
 }
 
 [data-theme="dark"] .button .glyph {
-  filter: invert(1) grayscale(1);
+    filter: invert(1) grayscale(1);
 }
 
 #scroll .glyph {
-  filter: invert(1) grayscale(1);
+    filter: invert(1) grayscale(1);
 }
 
 [data-theme="light"] #scroll .glyph {
-  filter: none;
-  transform: rotate(180deg);
-  display: inline-block;
+    filter: none;
+    transform: rotate(180deg);
+    display: inline-block;
 }
 
 #menu {
-  position: absolute;
-  display: none;
-  border: 1px solid #888;
-  background-color: var(--background-color);
-  z-index: 99999;
-  padding: 0.3rem;
+    position: absolute;
+    display: none;
+    border: 1px solid #888;
+    background-color: var(--background-color);
+    z-index: 99999;
+    padding: 0.3rem;
 }
 
 #menu button {
-  margin: 0.2rem;
-  cursor: pointer;
-  background-color: var(--background-btn);
+    margin: 0.2rem;
+    cursor: pointer;
+    background-color: var(--background-btn);
 }
