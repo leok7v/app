@@ -32,8 +32,8 @@ const md =
 
 const get = id => document.getElementById(id)
 
-let current_chat_key = null
-let selected_chat = null
+let current  = null // current chat key
+let selected = null // selected chat
 
 const render_markdown = md => marked.parse(md)
 
@@ -43,54 +43,37 @@ document.addEventListener("copy", e => {
     e.clipboardData.setData("text/plain", s)
 })
 
-const get_chat_data = k => {
+const get_chat = k => {
     const s = localStorage.getItem(k)
     return s ? JSON.parse(s) : []
 }
 
-const save_chat_data = (k, a) =>
+const save_chat = (k, a) =>
     localStorage.setItem(k, JSON.stringify(a))
 
-const render_messages = k => {
-    const messages = get("messages")
-    const chat_title = get("title")
-    const arr = get_chat_data(k)
-    messages.innerHTML = ""
-    arr.forEach(msg => {
-        const d = document.createElement("div")
-        d.className = msg.sender === "user"
-            ? "message_user"
-            : "message_bot"
-        d.innerHTML = render_markdown(msg.text)
-        messages.appendChild(d)
-    })
-    messages.scrollTop = messages.scrollHeight
-    chat_title.textContent = k
-}
+// Android
+// Mozilla/5.0 (linux; android 11; kfquwi build/rs8332.3115n; wv) applewebkit/537.36 (khtml, like gecko) version/4.0 chrome/128.0.6613.187 safari/537.36
+// linux armv8l
 
-const rebuild_list = () => {
-    const list = get("list")
-    list.innerHTML = ""
-    const count = localStorage.length
-    for (let i = count - 1; i >= 0; i--) {
-        const key = localStorage.key(i)
-        if (!key) continue
-        const div = document.createElement("div")
-        div.className = "item"
-        const span = document.createElement("span")
-        span.textContent = key
-        const dots = document.createElement("button")
-        dots.className = "button"
-        dots.textContent = "⋮"
-        dots.onclick = e => {
-            e.stopPropagation()
-            selected_chat = key
-            show_menu(e.pageX, e.pageY)
-        }
-        div.appendChild(span)
-        div.appendChild(dots)
-        list.appendChild(div)
-    }
+// macOS Sequoai 15.3 Apple Silicon
+// mozilla/5.0 (macintosh; intel mac os x 10_15_7) applewebkit/605.1.15 (khtml, like gecko)
+// macintel
+    
+const detect = () => {
+    const html = document.documentElement
+    const ua = navigator.userAgent.toLowerCase()
+    const p = navigator.platform ? navigator.platform.toLowerCase() : ""
+    const apple =
+        /iphone|ipad|ipod/.test(ua) ||
+        (p.includes("mac") && navigator.maxTouchPoints > 1) ||
+        (ua.includes("macintosh") &&
+         ua.includes("applewebkit") &&
+        !ua.includes("chrome"))
+    const bro = apple ? "safari" : "chrome"
+//  console.log("User-Agent:", ua)
+//  console.log("Platform:", p)
+//  console.log("Browser:", bro)
+    html.setAttribute("data-bro", bro)
 }
 
 const get_time_label = () => {
@@ -101,70 +84,116 @@ const get_time_label = () => {
            `${d.getSeconds().toString().padStart(2, "0")}`
 }
 
-const start = () => {
-    let k = get_time_label()
-    while (localStorage.getItem(k)) {
-        k = get_time_label()
-    }
-    localStorage.setItem(k, "[]")
-    current_chat_key = k
-    const arr = [{
-        sender: "bot",
-        text: "What would you like to discuss today?<br>" +
-              "<sup>Full sentences help me respond better.<sup>"
-    }]
-    save_chat_data(k, arr)
-    rebuild_list()
-    render_messages(k)
-}
 
-const send_message = t => {
-    if (!current_chat_key || !t) return
-    const arr = get_chat_data(current_chat_key)
-    arr.push({ sender: "user", text: t })
-    arr.push({ sender: "bot", text: md })
-    save_chat_data(current_chat_key, arr)
-    render_messages(current_chat_key)
-}
+detect() // Immediately to apply styles ASAP
 
-const show_menu = (x, y) => {
-    const menu = get("menu")
-    menu.style.left = `${x}px`
-    menu.style.top = `${y}px`
-    menu.style.display = "block"
-}
-
-const hide_menu = () => {
-    const menu = get("menu")
-    menu.style.display = "none"
-    selected_chat = null
-}
-
-const init = () => {
-    const toggle_theme = get("toggle_theme"),
-          send         = get("send"),
-          restart      = get("restart"),
-          clear        = get("clear"),
+const init = () => { // called DOMContentLoaded
+    const clear        = get("clear"),
           collapse     = get("collapse"),
-          expand       = get("expand"),
-          scroll       = get("scroll"),
-          input        = get("input"),
           content      = get("content"),
+          expand       = get("expand"),
+          input        = get("input"),
+          layout       = get("layout"),
+          list         = get("list"),
+          menu         = get("menu"),
           messages     = get("messages"),
+          navigation   = get("navigation"),
           remove       = get("remove"),
           rename       = get("rename"),
+          restart      = get("restart"),
+          scroll       = get("scroll"),
+          send         = get("send"),
           share        = get("share"),
-          navigation   = get("navigation"),
-          layout       = get("layout"),
-          menu         = get("menu")
+          toggle_theme = get("toggle_theme");
 
+    const render_messages = (k) => {
+        const arr = get_chat(k)
+        messages.innerHTML = ""
+        arr.forEach(msg => {
+            const d = document.createElement("div")
+            d.className = msg.sender === "user"
+                ? "message_user"
+                : "message_bot"
+            d.innerHTML = render_markdown(msg.text)
+            messages.appendChild(d)
+        })
+        messages.scrollTop = messages.scrollHeight
+        title.textContent = k
+    }
+
+    const rebuild_list = () => {
+        list.innerHTML = ""
+        const count = localStorage.length
+        for (let i = count - 1; i >= 0; i--) {
+            const key = localStorage.key(i)
+            if (!key) continue
+            const div = document.createElement("div")
+            div.className = "item"
+            div.onclick = () => {
+                current = key
+                render_messages(key)
+            }
+            const span = document.createElement("span")
+            span.textContent = key
+            const dots = document.createElement("button")
+            dots.className = "button"
+            dots.textContent = "⋮"
+            dots.onclick = e => {
+                e.stopPropagation()
+                selected = key
+                show_menu(e.pageX, e.pageY)
+            }
+            div.appendChild(span)
+            div.appendChild(dots)
+            list.appendChild(div)
+        }
+    }
+
+    const start = () => {
+        let k = get_time_label()
+        while (localStorage.getItem(k)) {
+            k = get_time_label()
+        }
+        localStorage.setItem(k, "[]")
+        current = k
+        const arr = [{
+            sender: "bot",
+            text: "What would you like to discuss today?<br>" +
+                  "<sup>Full sentences help me respond better.<sup>"
+        }]
+        save_chat(k, arr)
+        rebuild_list()
+        render_messages(k)
+    }
+
+    const send_message = t => {
+        if (!current || !t) return
+        const arr = get_chat(current)
+        arr.push({ sender: "user", text: t })
+        arr.push({ sender: "bot", text: md })
+        save_chat(current, arr)
+        render_messages(current)
+    }
+
+    const show_menu = (x, y) => {
+        menu.style.left = `${x}px`
+        menu.style.top = `${y}px`
+        menu.style.display = "block"
+    }
+
+    const hide_menu = () => {
+        menu.style.display = "none"
+        selected = null
+    }
+    
+    detect()
     marked.use({pedantic: false, gfm: true, breaks: false})
     rebuild_list()
     if (!localStorage.length) {
         start()
     } else {
-        current_chat_key = localStorage.key(0)
-        render_messages(current_chat_key)
+        current = localStorage.key(0)
+        render_messages(current)
     }
 
     toggle_theme.onclick = () => {
@@ -187,7 +216,7 @@ const init = () => {
     
     clear.onclick = () => {
         localStorage.clear()
-        current_chat_key = null
+        current = null
         start()
     }
 
@@ -237,39 +266,39 @@ const init = () => {
     }
 
     remove.onclick = () => {
-        if (!selected_chat) return
-        localStorage.removeItem(selected_chat)
-        if (current_chat_key === selected_chat)
-            current_chat_key = null
+        if (!selected) return
+        localStorage.removeItem(selected)
+        if (current === selected)
+            current = null
         rebuild_list()
         if (!localStorage.length) {
             start()
-        } else if (!current_chat_key) {
+        } else if (!current) {
             const k = localStorage.key(0)
-            current_chat_key = k
+            current = k
             render_messages(k)
         }
         hide_menu()
     }
 
     rename.onclick = () => {
-        if (!selected_chat) return
-        const name = prompt("Enter new name", selected_chat)
-        if (name && name !== selected_chat) {
-            const data = get_chat_data(selected_chat)
-            localStorage.removeItem(selected_chat)
+        if (!selected) return
+        const name = prompt("Enter new name", selected)
+        if (name && name !== selected) {
+            const data = get_chat(selected)
+            localStorage.removeItem(selected)
             localStorage.setItem(name, JSON.stringify(data))
-            if (current_chat_key === selected_chat)
-                current_chat_key = name
+            if (current === selected)
+                current = name
             rebuild_list()
-            render_messages(current_chat_key)
+            render_messages(current)
         }
         hide_menu()
     }
 
     share.onclick = () => {
-        if (!selected_chat) return
-        const data = get_chat_data(selected_chat)
+        if (!selected) return
+        const data = get_chat(selected)
         prompt("Copy chat data:", JSON.stringify(data))
         hide_menu()
     }
