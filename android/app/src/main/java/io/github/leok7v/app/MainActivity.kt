@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import android.view.WindowInsets
+import android.view.WindowManager
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -23,22 +24,29 @@ import io.github.leok7v.app.ui.theme.AppTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            window.attributes.layoutInDisplayCutoutMode =
+                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER
+        }
+        // Your existing system UI flags (you may want to remove SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        // if you don't want content behind system bars, including the notch)
         window.decorView.systemUiVisibility = (
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                         or View.SYSTEM_UI_FLAG_FULLSCREEN
                         or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 )
-        window.decorView.setOnApplyWindowInsetsListener { _, insets ->
+        // If you're applying insets, make sure you aren’t consuming all of them if you want safe areas applied
+        window.decorView.setOnApplyWindowInsetsListener { view, insets ->
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                WindowInsets.CONSUMED // Return the official consumed insets
-            } else { // Deprecated, but required for older versions:
-                insets.consumeSystemWindowInsets()
+                insets // Let the system handle the insets so safe areas are respected
+            } else {
+                insets.consumeSystemWindowInsets() // For older devices (optional)
             }
         }
+        // Optional: If you have custom methods, review them to ensure they don't force full-screen into the cutout.
         hideSystemUI(window, window.decorView)
-        enableEdgeToEdge()
+//      enableEdgeToEdge()
         setContent { AppTheme { WebViewScreen("app://./index.html") } }
     }
 }
