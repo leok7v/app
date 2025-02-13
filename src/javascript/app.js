@@ -51,6 +51,13 @@ const get_chat = k => {
 const save_chat = (k, a) =>
     localStorage.setItem(k, JSON.stringify(a))
 
+// TODO: ChatGPT dark backgrounds (match):
+// backgrounds:
+// navigation #272829
+// messages   #38393a
+// input      #3c3c3c
+// user       #454646
+
 // Android
 // Mozilla/5.0 (linux; android 11; kfquwi build/rs8332.3115n; wv) applewebkit/537.36 (khtml, like gecko) version/4.0 chrome/128.0.6613.187 safari/537.36
 // linux armv8l
@@ -70,9 +77,9 @@ const detect = () => {
          ua.includes("applewebkit") &&
         !ua.includes("chrome"))
     const bro = apple ? "safari" : "chrome"
-//  console.log("User-Agent:", ua)
-//  console.log("Platform:", p)
-//  console.log("Browser:", bro)
+    console.log("User-Agent:", ua)
+    console.log("Platform:", p)
+    console.log("Browser:", bro)
     html.setAttribute("data-bro", bro)
 }
 
@@ -112,8 +119,8 @@ const init = () => { // called DOMContentLoaded
         arr.forEach(msg => {
             const d = document.createElement("div")
             d.className = msg.sender === "user"
-                ? "message_user"
-                : "message_bot"
+                ? "user"
+                : "bot"
             d.innerHTML = render_markdown(msg.text)
             messages.appendChild(d)
         })

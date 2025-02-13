@@ -6,7 +6,8 @@
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
     <title>App</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="stylesheet" href="app://./app.css" />
     <script type="module">
         import { init } from "app://./app.js"
@@ -21,7 +22,7 @@
         <button id="clear" class="button"><span class="glyph">🧹</span></button>
         <span class="title">Version: 25.02.12</span>
       </div>
-      <div id="list"></div>
+      <div id="chats"><div id="list"></div></div>
     </div>
     <div id="content" class="content">
       <div id="header" class="header">
@@ -31,7 +32,7 @@
         <span style="flex:1;"></span>
         <button id="toggle_theme" class="button"><span class="glyph">◐</span></button>
       </div>
-      <div id="messages"></div>
+      <div id="chat"><div id="messages"></div></div>
       <div id="scroll" class="circled">↧</div>
       <div class="input_container">
         <div id="input" contenteditable="true" placeholder="⇧⏎"></div>
