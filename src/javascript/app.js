@@ -195,7 +195,15 @@ const init = () => { // called DOMContentLoaded
     
     detect()
     marked.use({pedantic: false, gfm: true, breaks: false})
+
     rebuild_list()
+
+    window.addEventListener("resize", () => {
+        const px = window.innerHeight * 0.01;
+        console.log("--vh: " + px + "px")
+        document.documentElement.style.setProperty("--vh", px + "px")
+    })
+
     if (!localStorage.length) {
         start()
     } else {

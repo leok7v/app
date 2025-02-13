@@ -37,6 +37,10 @@
 [data-platform="android"] .button { --background-color: blue; }
 [data-platform="win"] .button { --background-color: blue; }
 
+* {
+    box-sizing: border-box;
+}
+
 html, body {
     margin: 0;
     font-family: sans-serif;
@@ -63,8 +67,8 @@ html, body {
 }
 
 body {
-    width: 100vw;
-    height: 100vh;
+    width: 100dvw;
+    height: 100dvh;
     min-width: 100%;
     max-width: 100%;
     min-height: 100%;
@@ -88,6 +92,16 @@ body {
     background-color: var(--background-header);
 }
 
+.viewport {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    height: calc(var(--vh) * 100); /* Adapts to dynamic viewport height */
+}
+
 .layout {
     display: flex;
     flex-direction: row;
@@ -96,42 +110,29 @@ body {
 }
 
 .navigation {
-    width: 35%;
+    max-width: 45%;
+    overflow: hidden;
     flex: 0 0 auto;
     border-right: 1px solid #ccc;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    transition: width 0.3s ease;
+    transition: max-width 0.3s ease;
 }
 
 .collapsed {
-    width: 0;
-    min-width: 0;
+    max-width: 0;
     overflow: hidden;
+    transition: max-width 0.3s ease;
 }
 
 .content {
-    width: 100vw;
-    height: 100vh;
-    min-width: 100%;
-    max-width: 100%;
-    min-height: 100%;
-    max-height: 100%;
-    
-    
+    position: relative;
     display: flex;
     flex: 1;
     flex-direction: column;
-    position: relative;
-    transition: all 0.3s;
     border: none;
-}
-
-#list {
-    padding: 0.5rem;
-    overflow-x: hidden;
-    overflow-y: auto;
+    transition: all 0.3s;
 }
 
 .item {
@@ -156,25 +157,50 @@ body {
 }
 
 .title {
+    min-width: 0;
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-#chat, #chats {
+#chats {
+    flex: 1; /* Takes up remaining space */
     display: flex;
-    flex-grow: 1;
-    flex-direction: row;
-    max-height: calc(100vh - 3em - 3em);
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#list {
+    flex: 1;
+    padding: 0.5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#chat-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+    min-width: 0; /* Prevents expansion beyond parent width */
+    margin: 1.0rem;
+}
+
+#chat {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0; /* Prevents expansion beyond parent width */
     overflow: hidden;
 }
 
 #messages {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: column;
-    overflow-y: auto;
+    flex-grow: 1; /* Takes full height inside #chat */
+    overflow-x: hidden;
+    overflow-y: auto; /* Enables vertical scrolling */
+    min-width: 0;     /* Prevents expansion beyond parent width */
+    max-width: 100%;  /* Ensures it does not exceed parent's width */
     border: 1px solid #888;
     border-radius: 0.5rem;
     padding: 0.5rem;
@@ -183,30 +209,16 @@ body {
     background-color: var(--background-messages);
 }
 
-.user {
-    background: var(--background-user);
-    margin: 0.3rem;
-    margin-left: 2em;
-    padding: 0.3rem;
-    border-radius: 4px;
-}
-
-.bot {
-    background: var(--background-bot);
-    margin: 0.3rem;
-    padding: 0.3rem;
-    border-radius: 4px;
-}
-
 .input_container {
+    flex: 0 0 auto; /* Prevents expansion */
+    flex-direction: column;
     border: 1px solid #888;
     border-radius: 0.5rem;
-    background-color: var(--background-input);
     padding: 0.5rem;
     margin: 0.3rem;
     display: flex;
-    flex-direction: column;
     gap: 0.5rem;
+    background-color: var(--background-input);
 }
 
 #input {
@@ -225,6 +237,28 @@ body {
 
 #input:focus:empty::before {
     content: "";
+}
+
+.user {
+    background: var(--background-user);
+    margin: 0.3rem;
+    margin-left: 2em;
+    padding: 0.3rem;
+    border-radius: 4px;
+    max-width: 100%;
+}
+
+.bot {
+    background: var(--background-bot);
+    margin: 0.3rem;
+    padding: 0.3rem;
+    border-radius: 4px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-width: 100%;
+    white-space: pre-wrap;   /* Ensures long text wraps */
+    word-wrap:   break-word; /* Allows breaking long words */
+    word-break:  break-word; /* Extra safeguard for stubborn long words */
 }
 
 .button_row {
@@ -255,6 +289,7 @@ body {
 
 #scroll {
     position: absolute;
+    font-weight: bold;
     bottom: 1.0rem;
     left: 50%;
     transform: translateX(-50%);
